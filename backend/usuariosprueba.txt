@@ -1,0 +1,5 @@
+usuario			contraseña
+
+testadmin@email.com	passadmin
+testuser@email.com	passuser
+mailcrear@gmail.com	Passcrear1!

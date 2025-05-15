@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="sortcut icon" href="#" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="estilos/desktop.css" media="screen and (min-width: 1024px)">
+    <link rel="stylesheet" href="estilos/tablet.css" media="screen and (max-width: 1024px) and (min-width: 768px)">
+    <link rel="stylesheet" href="estilos/mobile.css" media="screen and (max-width: 768px)">
+    <title>Baldurs Builder V4</title>
+</head>
+<body>
+    <!-- Header de la pagina -->
+    <header id="cabecera">
+        <h1>Creador de builds para Baldur's Gate III</h1>
+    </header>
+    <!-- Contenedor de la pagina -->
+    <main id="contenedor-principal">
+        <!-- Division superior de la pagina -->
+        <section id="contenedor-superior">
+            <!-- Contenedor para crear, cargar o borrar builds -->
+            <article id="contenedor-builds">
+                <h2>Lista de Builds</h2>
+                <div id="titulo-builds">
+                    <div id="fila-crear-build">
+                        <div id="label-crear-build"><b>Nombre Build:</b>
+                        <input type="text" name="nombre" id="input-nombre-build" value="Nueva Build" ></div>
+                        <button id="boton-crear-build" class="boton-superior">NUEVA BUILD</button>
+                    </div>
+                    <div id="texto-lista-build">Para ver o editar sus builds guardadas inicie sesion</div>
+                    
+                    <div id="botones-listas-builds">
+                        <button id="boton-lista-builds" class="boton-superior oculto">Lista Builds</button>
+                        <button id="boton-lista-publicas" class="boton-superior">Builds Publicas</button>
+                    </div>
+                </div>
+            </article>
+            <!-- Contenedor para conectarse o abrir la ventana de registro -->
+            <article id="contenedor-sesion">
+                <h2>Usuario</h2>
+                <div id="botones-sesion" class="oculto">
+                    <a href="htmls/login.html" id="boton-inicio-sesion" class="boton-superior">Inicio sesion</a>
+                    <a href="htmls/registro.html" id="boton-registro" class="boton-superior">Registro</a>
+                </div>
+                <div id="botones-cuenta">
+                    <a href="index.html" id="boton-cerrar" class="boton-superior">Cerrar sesion</a>
+                    <a href="htmls/cuenta.html" id="boton-cuenta" class="boton-superior">Cuenta</a>
+                </div>
+            </article>
+        </section>
+
+        <section id="contenedor-medio" class="oculto">
+            <article id="contenedor-utilidades">
+                <div id="botones-utilidades">
+                    <button id="boton-trasfondo" class="boton-activo">TRASFONDO</button>
+                    <button id="boton-habilidades" class="seleccionado boton-activo">HABILIDADES</button>
+                    <button id="boton-equipamiento" class="boton-activo">EQUIPAMIENTO</button>
+                </div>
+                <div id="contenido-utilidades">
+                    <div id="contenido-trasfondo" class="oculto">
+                        <p>Rellena los datos clave de tu personaje</p>
+                        <p>Nombre: </p><input type="text" name="nombre" id="input-nombre">
+                        <p>Clase: </p>
+                        <div class="custom-select" id="select-clase">
+                          <select name="clase" id="input-clase">
+                            <option value="1">Bárbaro</option>
+                            <option value="2">Bardo</option>
+                            <option value="3">Brujo</option>
+                            <option value="4">Clérigo</option>
+                            <option value="5">Druida</option>
+                            <option value="6">Explorador</option>
+                            <option value="7">Guerrero</option>
+                            <option value="8">Hechicero</option>
+                            <option value="9">Mago</option>
+                            <option value="10">Monje</option>
+                            <option value="11">Paladín</option>
+                            <option value="12">Pícaro</option>
+                          </select>
+                        </div>
+
+                        <p>Raza: </p>
+                        <div class="custom-select" id="select-raza">
+                          <select name="raza" id="input-raza">
+                            <option value="1">Elfo</option>
+                            <option value="2">Enano</option>
+                            <option value="3">Tiefling</option>
+                            <option value="4">Drow</option>
+                            <option value="5">Humano</option>
+                            <option value="6">Gnomo</option>
+                            <option value="7">Mediano</option>
+                            <option value="8">Githyanki</option>
+                            <option value="9">Semielfo</option>
+                            <option value="10">Draconido</option>
+                            <option value="11">Tabaxi</option>
+                          </select>
+                        </div>
+                        
+
+                        <p>Historia: </p><textarea name="historia" id="input-historia"></textarea>
+                    </div>
+
+                    <div id="contenido-habilidades">
+                        <p>Distribuye los puntos de habilidad del personaje.</p>
+                        <div id="habilidades-sub">
+                            <div id="selectores-habilidades">
+                                <div>
+                                    <div>Puntos de habilidad</div>
+                                    <div id="puntos-disponibles">27</div>
+                                </div>
+                                <div id="selector-fuerza">
+                                    <div>
+                                        <img src="media/icono-fuerza.png" alt="icon-fuerza">
+                                    </div>
+                                    <div>Fuerza</div>
+                                    <div>
+                                        <button id="fuerza-menos" class="boton-inactivo">-</button> <span id="fuerza-valor">8</span> <button id="fuerza-mas" class="boton-activo">+</button>
+                                    </div>
+                                </div>
+                                <div id="selector-destreza">
+                                    <div>
+                                        <img src="media/icono-destreza.png" alt="icon-destreza">
+                                    </div>
+                                    <div>Destreza</div>
+                                    <div>
+                                        <button id="destreza-menos" class="boton-inactivo">-</button> <span id="destreza-valor">8</span> <button id="destreza-mas" class="boton-activo">+</button>
+                                    </div>
+                                </div>
+                                <div id="selector-constitucion">
+                                    <div>
+                                        <img src="media/icono-constitucion.png" alt="icon-constitucion">
+                                    </div>
+                                    <div>Constitucion</div>
+                                    <div>
+                                        <button id="constitucion-menos" class="boton-inactivo">-</button> <span id="constitucion-valor">8</span> <button id="constitucion-mas" class="boton-activo">+</button>
+                                    </div>
+                                </div>
+                                <div id="selector-inteligencia">
+                                    <div>  
+                                        <img src="media/icono-inteligencia.png" alt="icon-inteligencia">
+                                    </div>
+                                    <div>Inteligencia</div>
+                                    <div>
+                                        <button id="inteligencia-menos" class="boton-inactivo">-</button> <span id="inteligencia-valor">8</span> <button id="inteligencia-mas" class="boton-activo">+</button>
+                                    </div>
+                                </div>
+                                <div id="selector-sabiduria">
+                                    <div>
+                                        <img src="media/icono-sabiduria.png" alt="icon-sabiduria">
+                                    </div>
+                                    <div>Sabiduria</div>
+                                    <div>
+                                        <button id="sabiduria-menos" class="boton-inactivo">-</button> <span id="sabiduria-valor">8</span> <button id="sabiduria-mas" class="boton-activo">+</button>
+                                    </div>
+                                </div>
+                                <div id="selector-carisma">
+                                    <div>
+                                        <img src="media/icono-carisma.png" alt="icon-carisma">
+                                    </div>
+                                    <div>Carisma</div>
+                                    <div>
+                                        <button id="carisma-menos" class="boton-inactivo">-</button> <span id="carisma-valor">8</span> <button id="carisma-mas" class="boton-activo">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="bonus-habilidades">
+                                <div>
+                                    <div>Bonus</div>
+                                    <div>+2 | +1</div>
+                                </div>
+                                <div>
+                                    <input type="checkbox" name="fuerza" class="mas2" value="2">
+                                    <input type="checkbox" name="fuerza" class="mas1" value="1">
+                                </div>
+                                <div>
+                                    <input type="checkbox" name="destreza" class="mas2" value="2">
+                                    <input type="checkbox" name="destreza" class="mas1" value="1">
+                                </div>
+                                <div>
+                                    <input type="checkbox" name="constitucion" class="mas2" value="2">
+                                    <input type="checkbox" name="constitucion" class="mas1" value="1">
+                                </div>
+                                <div>
+                                    <input type="checkbox" name="inteligencia" class="mas2" value="2">
+                                    <input type="checkbox" name="inteligencia" class="mas1" value="1">
+                                </div>
+                                <div>
+                                    <input type="checkbox" name="sabiduria" class="mas2" value="2">
+                                    <input type="checkbox" name="sabiduria" class="mas1" value="1">
+                                </div>
+                                <div>
+                                    <input type="checkbox" name="carisma" class="mas2" value="2">
+                                    <input type="checkbox" name="carisma" class="mas1" value="1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="contenido-equipamiento" class="oculto">
+                        <p>Escoge el equipamiento de tu personaje:</p>
+                        <p>Arma</p>
+                        <div class="slot" id="slot-arma">Selecionar Arma (fue): 6 de ataque sin armas</div>
+                        <p>Armadura</p>
+                        <div class="slot" id="slot-armadura">Selecionar Armadura: 10 de defensa sin armadura</div>
+                        <p>Accesorio 1</p>
+                        <div class="slot" id="slot-accesorio1">Seleccionar accesorio 1</div>
+                        <p>Accesorio 2</p>
+                        <div class="slot" id="slot-accesorio2">Seleccionar accesorio 2</div>
+                    </div>
+                </div>
+                <div id="botones-build" class="oculto">
+                    <button id="boton-editar" class="boton-superior">Editar</button> 
+                    <button id="boton-crear" class="boton-superior">Crear</button> 
+                    <input id="checkbox-publica" type="checkbox" name="publica" value="1">Pública
+                </div>
+            </article>
+
+            <article id="contenedor-personaje">
+                <div id="detalles-personaje">        
+                    <div>
+                        <h3><strong id="nombre-build">Nueva Build</strong>:</h3>
+                        <p><strong><i><span id="nombre-personaje">Tav</span></p></i></strong>
+                        <p>Raza: <span id="raza-personaje">Draconido</span></p>
+                        <p>Clase: <span id="clase-personaje">Clerigo</span></p>
+                        <p>Vida: <span id="vida-personaje">47</span></p>
+                        <p>Defensa: <span id="defensa-personaje">10</span></p>
+                        <p>Ataque: <span id="ataque-personaje">6 (fue)</span></p>
+                    </div>
+                    <div id="contenedor-imagen-personaje">
+                        <div id="imagen-build"></div>
+                        <input type="file" id="input-imagen" accept="image/*" style="display: none;"/>
+                        <div>
+                            <button id="boton-imagen" class="boton-superior"><i class="fas fa-upload"></i></button>
+                            <button id="boton-borrar-imagen" class="boton-superior"><i class="fa-regular fa-rectangle-xmark"></i></button> 
+                        </div>
+                    </div>
+                </div>
+                <div class="separador-horizontal"></div>
+                <div id="atributos-personaje">
+                    <div>
+                        <p>FUE</p>
+                        <span id="fuerza">8</span><span id="fuerza-mod">(-1)</span>
+                    </div>
+                    <div>
+                        <p>DES</p>
+                        <span id="destreza">8</span><span id="destreza-mod">(-1)</span>
+                    </div>
+                    <div>
+                        <p>CON</p>
+                        <span id="constitucion">8</span><span id="constitucion-mod">(-1)</span>
+                    </div>
+                    <div>
+                        <p>INT</p>
+                        <span id="inteligencia">8</span><span id="inteligencia-mod">(-1)</span>
+                    </div>
+                    <div>
+                        <p>SAB</p>
+                        <span id="sabiduria">8</span><span id="sabiduria-mod">(-1)</span>
+                    </div>
+                    <div>
+                        <p>CAR</p>
+                        <span id="carisma">8</span><span id="carisma-mod">(-1)</span>
+                    </div>
+                </div>
+
+                <div class="separador-horizontal"></div>
+                <p><strong>Habilidades:</strong></p>
+                <div id="lista-atributos">
+                    <div id="atributos-1">
+                        <div>
+                            <div>Acrobacias:</div><div id="acrobacias" class="destreza">-1</div>
+                        </div>
+                        <div>
+                            <div>Trato con Animales:</div><div id="trato-con-animales" class="sabiduria">-1</div>
+                        </div>
+                        <div>
+                            <div>Conocimiento Arcano:</div><div id="conocimiento-arcano" class="inteligencia">-1</div>
+                        </div>
+                        <div>
+                            <div>Atletismo:</div><div id="atletismo" class="fuerza">-1</div>
+                        </div>
+                        <div>
+                            <div>Engaño:</div><div id="engano" class="carisma">-1</div>
+                        </div>
+                        <div>
+                            <div>Historia:</div><div id="historia" class="inteligencia">-1</div>
+                        </div>
+                        <div>
+                            <div>Perspicacia:</div><div id="perspicacia" class="sabiduria">-1</div>
+                        </div>
+                        <div>
+                            <div>Intimidación:</div><div id="intimidacion" class="carisma">-1</div>
+                        </div>
+                        <div>
+                            <div>Investigación:</div><div id="investigacion" class="inteligencia">-1</div>
+                        </div>
+                    </div>
+                    <div class="separador-vertical"></div>
+                    <div id="atributos-2">
+                        <div>
+                            <div>Medicina:</div><div id="medicina" class="sabiduria">-1</div>
+                        </div>
+                        <div>
+                            <div>Naturaleza:</div><div id="naturaleza" class="inteligencia">-1</div>
+                        </div>
+                        <div>
+                            <div>Percepción:</div><div id="percepcion" class="sabiduria">-1</div>
+                        </div>
+                        <div>
+                            <div>Interpretación:</div><div id="interpretacion" class="carisma">-1</div>
+                        </div>
+                        <div>
+                            <div>Persuasión:</div><div id="persuasion" class="carisma">-1</div>
+                        </div>
+                        <div>
+                            <div>Religión:</div><div id="religion" class="inteligencia">-1</div>
+                        </div>
+                        <div>
+                            <div>Juego de Manos:</div><div id="juego-de-manos" class="destreza">-1</div>
+                        </div>
+                        <div>
+                            <div>Sigilo:</div><div id="sigilo" class="destreza">-1</div>
+                        </div>
+                        <div>
+                            <div>Supervivencia:</div><div id="supervivencia" class="sabiduria">-1</div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <section id="contenedor-inferior" class="oculto">
+            <article id="contenedor-simulador">
+                <h2>Pruebe su build en combate!</h2>
+                <button id="boton-simulador" class="boton-superior">Simulador</div>
+            </article>
+            <article id="contenedor-exportar-importar">
+                <h2>Exportar e importar</h2>
+                <div>
+                    <button id="boton-importar" class="boton-superior">Importar</button>
+                    <button id="boton-exportar" class="boton-superior">Exportar</button>
+                </div>
+            </article>
+        </section>
+        <div id="cropper-modal" style="display: none;">
+            <div id="cropper-modal-content">
+                <img id="imagen-a-recortar"/>
+                <button id="recortar-imagen" class="boton-superior">Recortar</button>
+            </div>
+        </div>
+        
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const customSelects = document.querySelectorAll(".custom-select");
+        
+          customSelects.forEach((wrapper) => {
+            const selectEl = wrapper.querySelector("select");
+            
+        
+            const selected = document.createElement("div");
+            selected.setAttribute("class", "select-selected");
+            selected.textContent = selectEl.options[selectEl.selectedIndex].textContent;
+            wrapper.appendChild(selected);
+        
+            const optionsContainer = document.createElement("div");
+            optionsContainer.setAttribute("class", "select-items select-hide");
+        
+            for (let i = 0; i < selectEl.options.length; i++) {
+              const opt = document.createElement("div");
+              opt.textContent = selectEl.options[i].textContent;
+        
+              opt.addEventListener("click", function () {
+                selectEl.selectedIndex = i;
+                selected.textContent = this.textContent;
+
+                const event = new Event('change', { bubbles: true });
+                selectEl.dispatchEvent(event);
+
+                const previouslySelected = optionsContainer.querySelector(".same-as-selected");
+                if (previouslySelected) previouslySelected.classList.remove("same-as-selected");
+                this.classList.add("same-as-selected");
+
+                selected.click(); // Cierra el dropdown
+               });
+        
+              optionsContainer.appendChild(opt);
+            }
+            wrapper.appendChild(optionsContainer);
+        
+            selected.addEventListener("click", function (e) {
+              e.stopPropagation();
+              closeAllSelect(selected);
+              optionsContainer.classList.toggle("select-hide");
+              selected.classList.toggle("select-arrow-active");
+            });
+          });
+        
+          function closeAllSelect(current) {
+            const allItems = document.querySelectorAll(".select-items");
+            const allSelected = document.querySelectorAll(".select-selected");
+        
+            allItems.forEach((el, i) => {
+              if (current !== allSelected[i]) {
+                el.classList.add("select-hide");
+                allSelected[i].classList.remove("select-arrow-active");
+              }
+            });
+          }
+          document.addEventListener("click", closeAllSelect);
+        });
+    </script>
+    <script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
