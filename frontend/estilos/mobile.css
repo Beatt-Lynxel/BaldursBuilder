@@ -507,6 +507,18 @@ input, select {
     cursor: pointer;
 }
 
+#botones-build {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+#contenedor-publicar {
+  margin-top: 14px;
+  margin-right: 2.5%;
+}
+
 .mas2 {
     margin-right: 5px;
 }
@@ -673,9 +685,10 @@ input, select {
 }
 
 .imagen-combatiente {
-    width: 60%;
-    height: auto;
-    max-height: 200px;
+  width: 60%;
+  height: auto;
+  max-width: 250px;
+  box-sizing: border-box;
 }
 
 .estadisticas-combatiente {
@@ -777,8 +790,9 @@ input, select {
     border: 3px dimgray groove;
 }
 
-#enemigos-combate {
-    margin-bottom: 10px;
+#contenedor-combatientes {
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 .enemigo-combate, .build-combate {
@@ -787,6 +801,55 @@ input, select {
     align-items: center;
     text-align: center;
 }
+
+#imagen-build1, .build-combate img {
+    padding: 20% 10% 0% 10%;
+}
+
+@keyframes sacudir {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-10px); }
+    80% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes golpeado {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(0.9);
+        filter: brightness(1.5) sepia(1) hue-rotate(-50deg) saturate(5)  drop-shadow(0 0 5px red);
+    }
+    100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+}
+
+@keyframes esquivar {
+    0% { transform: translateY(0); }
+    25% { transform: translateY(-5px); }
+    50% { transform: translateY(-10px); }
+    75% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+.atacando {
+    animation: sacudir 0.5s ease;
+}
+
+.golpeado {
+    animation: golpeado 0.5s ease;
+}
+
+.esquivar {
+    animation: esquivar 0.5s ease;
+}
+
 
 #ventana-simulacion h4 {
     margin-bottom: 0;

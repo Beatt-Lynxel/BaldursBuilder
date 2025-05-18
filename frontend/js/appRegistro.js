@@ -1,4 +1,5 @@
 console.log(document.cookie);
+const rutaServidor = "https://baldursbuilder.onrender.com";
 
 document.getElementById('boton-registro').addEventListener('click', (event) => {
     event.preventDefault();
@@ -9,19 +10,19 @@ document.getElementById('boton-registro').addEventListener('click', (event) => {
 
     // Validaciones
     if (!email || !contrasenia) {
-        mostrarModal('Error', 'El email y la contraseña no pueden estar vacíos.');
+        mostrarModalMensaje('Error', 'El email y la contraseña no pueden estar vacíos.');
         return;
     }
     if (!validarEmail(email)) {
-        mostrarModal('Error', 'Por favor, introduce un correo electrónico válido.');
+        mostrarModalMensaje('Error', 'Por favor, introduce un correo electrónico válido.');
         return;
     }
     if (!validarContrasenia(contrasenia)) {
-        mostrarModal('Error', 'La contraseña debe tener al menos 9 caracteres, incluyendo una minúscula, una mayúscula, un número y un carácter especial.');
+        mostrarModalMensaje('Error', 'La contraseña debe tener al menos 9 caracteres, incluyendo una minúscula, una mayúscula, un número y un carácter especial.');
         return;
     }
     if (!validarConfirmarContrasenia(contrasenia, confirmarContrasenia)) {
-        mostrarModal('Error', 'Las contraseñas no coinciden.');
+        mostrarModalMensaje('Error', 'Las contraseñas no coinciden.');
         return;
     }
     // Crea el objeto para el nuevo usuario
@@ -39,21 +40,31 @@ document.getElementById('boton-registro').addEventListener('click', (event) => {
             "; path=/; max-age=" + (60 * 60 * 24 * 7) + "; SameSite=Lax";
 
             // Mostramos un mensaje de éxito 2 segundos y redirigimos a index
-            mostrarModal('Éxito', `Se ha completado el registro de ${nuevoUsuario.email} correctamente.`);
+            mostrarModalMensaje('Éxito', `Se ha completado el registro de ${nuevoUsuario.email} correctamente.`);
             setTimeout(() => {
                 window.location.href = '../index.html';
             }, 2000);
         })
         .catch((error) => {
-            mostrarModal('Error', error.message || 'Error al registrar el usuario');
+            mostrarModalMensaje('Error', error.message || 'Error al registrar el usuario');
         });
+});
+
+['email', 'contrasenia', 'confirmarContrasenia'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            event.target.blur(); // Quita el foco del campo que disparó el evento
+            document.getElementById('boton-registro').click();
+        }
+    });
 });
 
 // Función para enviar la petición de registro envuelta en una promesa
 function cambiarContrasenia(nuevoUsuario) {
     return new Promise((resolve, reject) => {
         const peticion = new XMLHttpRequest();
-        peticion.open('POST', 'http://localhost:4000/users/register');
+        peticion.open('POST', rutaServidor + '/users/register');
         peticion.setRequestHeader('Content-Type', 'application/json');
         peticion.send(JSON.stringify(nuevoUsuario));
 
@@ -67,7 +78,12 @@ function cambiarContrasenia(nuevoUsuario) {
                     reject(new Error('Error al procesar la respuesta: ' + error));
                 }
             } else {
-                reject(new Error(`Error al registrar el usuario: ${peticion.responseText}`));
+                try {
+                    const errorRespuesta = JSON.parse(peticion.responseText);
+                    reject(new Error(`Error al registrar el usuarioe: ${errorRespuesta.error || 'Error desconocido'}`));
+                } catch (e) {
+                    reject(new Error(`Error al registrar el usuario: ${peticion.responseText}`));
+                }
             }
         });
 
@@ -77,52 +93,79 @@ function cambiarContrasenia(nuevoUsuario) {
     });
 }
 
-function mostrarModal(titulo, mensaje) {
-    const ventanaModal = document.createElement('div');
-    ventanaModal.style.position = 'fixed';
-    ventanaModal.style.top = '0';
-    ventanaModal.style.left = '0';
-    ventanaModal.style.width = '100%';
-    ventanaModal.style.height = '100%';
-    ventanaModal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    ventanaModal.style.display = 'flex';
-    ventanaModal.style.justifyContent = 'center';
-    ventanaModal.style.alignItems = 'center';
-    ventanaModal.style.zIndex = '1000';
+function mostrarModalMensaje(titulo, mensaje, onConfirm = null) {
+    // Si ya existe una, la borramos primero
+    const anterior = document.getElementById("modal-mensaje");
+    if (anterior) anterior.remove();
 
-    const contenidoModal = document.createElement('div');
-    contenidoModal.style.backgroundColor = 'black';
-    contenidoModal.style.padding = '20px';
-    contenidoModal.style.borderRadius = '8px';
-    contenidoModal.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
-    contenidoModal.style.textAlign = 'center';
+    const modal = document.createElement("div");
+    modal.id = "modal-mensaje";
+    modal.classList.add("modal-background");
 
-    const tituloModal = document.createElement('h2');
-    tituloModal.textContent = titulo;
+    const modalContent = document.createElement("div");
+    modalContent.classList.add("modal-content");
 
-    const mensajeModal = document.createElement('p');
-    mensajeModal.textContent = mensaje;
+    const contenedorMensaje = document.createElement("div");
+    contenedorMensaje.classList.add("contenedor-mensajes")
 
-    const botonCerrar = document.createElement('button');
-    botonCerrar.textContent = 'Cerrar';
-    botonCerrar.style.marginTop = '10px';
-    botonCerrar.style.padding = '10px 20px';
-    botonCerrar.style.border = 'none';
-    botonCerrar.style.backgroundColor = '#007BFF';
-    botonCerrar.style.color = 'white';
-    botonCerrar.style.borderRadius = '4px';
-    botonCerrar.style.cursor = 'pointer';
+    const h2 = document.createElement("h2");
+    h2.textContent = titulo;
 
-    botonCerrar.addEventListener('click', () => {
-        document.body.removeChild(ventanaModal);
+    const p = document.createElement("p");
+
+    if (titulo == "Error") {
+        try {
+            const parsed = JSON.parse(mensaje);
+            if (parsed && parsed.error) {
+                p.textContent = parsed.error;
+            } else {
+                p.textContent = mensaje;
+            }
+        } catch (e) {
+            // Si no es JSON válido, se usa directamente como texto
+            p.textContent = mensaje;
+        }
+    } else {
+        p.textContent = mensaje;
+    }
+
+    contenedorMensaje.appendChild(h2);
+    contenedorMensaje.appendChild(p);
+
+    if (titulo === "Confirmación" && typeof onConfirm === "function") {
+        const botonAceptar = document.createElement("button");
+        botonAceptar.textContent = "Aceptar";
+        botonAceptar.classList.add("boton-superior");
+        botonAceptar.addEventListener("click", () => {
+            modal.remove();
+            onConfirm(); // Ejecuta la acción confirmada
+        });
+
+        const botonCancelar = document.createElement("button");
+        botonCancelar.textContent = "Cancelar";
+        botonCancelar.classList.add("boton-superior");
+        botonCancelar.addEventListener("click", () => modal.remove());
+
+        contenedorMensaje.appendChild(botonAceptar);
+        contenedorMensaje.appendChild(botonCancelar);
+    } else {
+        const boton = document.createElement("button");
+        boton.textContent = "Aceptar";
+        boton.classList.add("boton-superior");
+        boton.addEventListener("click", () => modal.remove());
+        contenedorMensaje.appendChild(boton);
+    }
+
+    modalContent.appendChild(contenedorMensaje);
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.remove();
+        }
     });
-
-    contenidoModal.appendChild(tituloModal);
-    contenidoModal.appendChild(mensajeModal);
-    contenidoModal.appendChild(botonCerrar);
-    ventanaModal.appendChild(contenidoModal);
-    document.body.appendChild(ventanaModal);
-}
+} // modal mensajes
 
 function validarEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

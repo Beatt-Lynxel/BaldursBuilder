@@ -297,9 +297,8 @@ article {
 }
 
 
-#botones-listas-builds {
-    flex-direction: column;
-    gap: 15px;
+#botones-listas-builds, #texto-lista-build {
+    margin-top: -10px;
 }
 
 #botones-sesion, #botones-cuenta {
@@ -536,6 +535,18 @@ input, select {
     text-align: center;
 }
 
+#botones-build {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+#contenedor-publicar {
+  margin-top: 14px;
+  margin-right: 2.5%;
+}
+
 #bonus-habilidades > div + div {
     height: 40px;
     margin-top: 10px;
@@ -711,9 +722,10 @@ input, select {
 }
 
 .imagen-combatiente {
-    width: 60%;
-    height: auto;
-    max-height: 350px;
+  width: 60%;
+  height: auto;
+  max-width: 320px;
+  box-sizing: border-box;
 }
 
 .estadisticas-combatiente {
@@ -802,7 +814,7 @@ input, select {
 }
 
 #registro-combate {
-    height: 200px;
+    height: 250px;
     overflow-y: auto;
     background-color: #171717d1;
     padding: 10px;
@@ -815,8 +827,13 @@ input, select {
     border: 3px dimgray groove;
 }
 
-#enemigos-combate {
-    margin-bottom: 15px;
+#contenedor-combatientes {
+    display: flex;
+    width: 80%;
+}
+
+#enemigos-combate, #builds-combate {
+    width: 100%;
 }
 
 .enemigo-combate, .build-combate {
@@ -824,7 +841,56 @@ input, select {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    max-height: 350px;
+    max-height: 650px;
+    width: 100%;
+}
+
+#imagen-build1, .build-combate img {
+    padding: 20% 10% 0% 10%;
+}
+
+@keyframes sacudir {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-15px); }
+    40% { transform: translateX(15px); }
+    60% { transform: translateX(-15px); }
+    80% { transform: translateX(15px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes golpeado {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(0.9);
+        filter: brightness(1.5) sepia(1) hue-rotate(-50deg) saturate(5) drop-shadow(0 0 10px red);
+    }
+    100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+}
+
+@keyframes esquivar {
+    0% { transform: translateY(0); }
+    25% { transform: translateY(-10px); }
+    50% { transform: translateY(-15px); }
+    75% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+.atacando {
+    animation: sacudir 0.5s ease;
+}
+
+.golpeado {
+    animation: golpeado 0.5s ease;
+}
+
+.esquivar {
+    animation: esquivar 0.5s ease;
 }
 
 #ventana-simulacion h4 {

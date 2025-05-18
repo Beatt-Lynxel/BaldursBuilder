@@ -1,5 +1,6 @@
 console.log("Inicio Script Simulador");
 // Listados de variables y arrays iniciales
+const rutaServidor = "https://baldursbuilder.onrender.com";
 // Valores iniciales de las caracteristicas
 let caracteristicas = {
     fuerza: 8,
@@ -40,6 +41,7 @@ const razas = {
 };
 // JSON del personaje (cambiar a objeto)
 let personaje = {
+    id: 0,
     nombre: "Nueva Build",
     nombre_pj: "Tav",
     raza_id: 1,
@@ -99,10 +101,82 @@ listaAccesorios = accesoriosGuardados ? JSON.parse(accesoriosGuardados) : "No ha
 
 /*------------------------------------------------------------------------Funciones-------------------------------------------------------------------*/
 
+function obtenerArmas() {
+    return new Promise((resolve, reject) => {
+        const peticion = new XMLHttpRequest();
+        peticion.open('GET', rutaServidor + '/armas');
+
+        peticion.addEventListener("load", function () {
+            if (peticion.status >= 200 && peticion.status < 300) {
+                try {
+                    const respuesta = JSON.parse(peticion.responseText);
+                    resolve(respuesta);
+                } catch (error) {
+                    reject(new Error('Error al procesar la respuesta: ' + error));
+                }
+            } else {
+                reject(new Error(`Error al obtener las armas: ${peticion.responseText}`));
+            }
+        });
+        peticion.addEventListener("error", function () {
+            reject(new Error('No se pudo completar la solicitud. Por favor, intenta más tarde.'));
+        });
+        peticion.send();
+    });
+} // get armas
+
+function obtenerArmaduras() {
+    return new Promise((resolve, reject) => {
+        const peticion = new XMLHttpRequest();
+        peticion.open('GET', rutaServidor + '/armaduras');
+
+        peticion.addEventListener("load", function () {
+            if (peticion.status >= 200 && peticion.status < 300) {
+                try {
+                    const respuesta = JSON.parse(peticion.responseText);
+                    resolve(respuesta);
+                } catch (error) {
+                    reject(new Error('Error al procesar la respuesta: ' + error));
+                }
+            } else {
+                reject(new Error(`Error al obtener las armaduras: ${peticion.responseText}`));
+            }
+        });
+        peticion.addEventListener("error", function () {
+            reject(new Error('No se pudo completar la solicitud. Por favor, intenta más tarde.'));
+        });
+        peticion.send();
+    });
+} // get armaduras
+
+function obtenerAccesorios() {
+    return new Promise((resolve, reject) => {
+        const peticion = new XMLHttpRequest();
+        peticion.open('GET', rutaServidor + '/accesorios');
+
+        peticion.addEventListener("load", function () {
+            if (peticion.status >= 200 && peticion.status < 300) {
+                try {
+                    const respuesta = JSON.parse(peticion.responseText);
+                    resolve(respuesta);
+                } catch (error) {
+                    reject(new Error('Error al procesar la respuesta: ' + error));
+                }
+            } else {
+                reject(new Error(`Error al obtener las accesorios: ${peticion.responseText}`));
+            }
+        });
+        peticion.addEventListener("error", function () {
+            reject(new Error('No se pudo completar la solicitud. Por favor, intenta más tarde.'));
+        });
+        peticion.send();
+    });
+} // get accesorios
+
 function obtenerEnemigos() {
     return new Promise((resolve, reject) => {
         const peticion = new XMLHttpRequest();
-        peticion.open('GET', 'http://localhost:4000/enemigos');
+        peticion.open('GET', rutaServidor + '/enemigos');
 
         peticion.addEventListener("load", function () {
             if (peticion.status >= 200 && peticion.status < 300) {
@@ -121,7 +195,7 @@ function obtenerEnemigos() {
         });
         peticion.send();
     });
-}
+} // enemigos
 
 function obtenerBuildsDelUsuario() {
     return new Promise((resolve, reject) => {
@@ -130,7 +204,7 @@ function obtenerBuildsDelUsuario() {
         const token = sessionCookie.split('=')[1];
 
         const peticion = new XMLHttpRequest();
-        peticion.open('GET', 'http://localhost:4000/builds/misBuilds?token=' + token);
+        peticion.open('GET', rutaServidor + '/builds/misBuilds?token=' + token);
         peticion.addEventListener("load", function () {
             if (peticion.status >= 200 && peticion.status < 300) {
                 try {
@@ -160,7 +234,7 @@ function obtenerBuildsPublicas() {
         console.log(token);
         
         const peticion = new XMLHttpRequest();
-        peticion.open('GET', 'http://localhost:4000/builds/publicas?token=' + token);
+        peticion.open('GET', rutaServidor + '/builds/publicas?token=' + token);
         peticion.addEventListener("load", function () {
             if (peticion.status >= 200 && peticion.status < 300) {
                 try {
@@ -264,10 +338,10 @@ function actualizarVentanaCombate(build1, enemigo1, mensajeInicial = null) {
         <p>Vida: ${enemigo1.vidaActual}/${enemigo1.vida}</p>
     `;
     if (build1.imagen == 1) {
-        imagenBuild1 = `../media/builds/build-${build1.id}.png`;
+        imagenBuild1 = `${rutaServidor}/uploads/builds/build-${build1.id}.png`;
     }
     divBuild.innerHTML = `
-        <h4>${build1.nombre_pj} <br> (${clases[build1.clase_id]} - ${razas[build1.raza_id]})</h4>
+        <h4>${build1.nombre_pj}</h4>
         <img src="${imagenBuild1}" alt="Imagen de ${build1.nombre_pj} (${clases[build1.clase_id]} - ${razas[build1.raza_id]})" class="imagen-combatiente">
         <div class="barra-vida">
             <div class="vida" style="width:${(build1.vidaActual / build1.vida) * 100}%"></div>
@@ -284,6 +358,30 @@ function registrarEvento(texto) {
     registro.scrollTop = registro.scrollHeight; // Scroll automático al final
 } // Función para registrar lo que pasa en combate
 
+function animacionAtaque(atacanteId, objetivoId, golpeExitoso = false) {
+    const atacante = document.getElementById(atacanteId);
+    const objetivo = document.getElementById(objetivoId);
+
+    atacante.classList.add('atacando');
+
+    if (golpeExitoso) {
+        objetivo.classList.add('golpeado');
+    } else {
+        objetivo.classList.add('esquivar');
+    }
+
+    setTimeout(() => {
+        atacante.classList.remove('atacando');
+        if (golpeExitoso) {
+            objetivo.classList.remove('golpeado');
+        } else {
+            objetivo.classList.remove('esquivar');
+        }
+    }, 1000); // 1 segundo para eliminar la animación
+}
+
+
+
 function iniciarCombate() {
     const intervaloAtaque = 2000; // cada 2s
 
@@ -297,6 +395,7 @@ function iniciarCombate() {
             registrarEvento(`Defensa enemigo: ${enemigo1.defensa}`);
             
             if (ataqueTotal >= enemigo1.defensa) {
+                animacionAtaque('build1', 'enemigo1', true);
                 if (dado === 20) {
                     registrarEvento(`¡Impacto crítico! Daño: ${build1.ataque + (2 * build1.bonificador)}.`);
                     enemigo1.vidaActual -= (build1.ataque + (2 * build1.bonificador));
@@ -316,6 +415,7 @@ function iniciarCombate() {
                 }
                 actualizarVentanaCombate(build1, enemigo1);
             } else {
+                animacionAtaque('build1', 'enemigo1', false);
                 registrarEvento("¡Fallaste el ataque!");
             }
         } else {
@@ -324,6 +424,7 @@ function iniciarCombate() {
             registrarEvento(`Tira dado de 20: ${dado} + bonificador (${enemigo1.bonificador}) = ${ataqueTotal}`);
             
             if (ataqueTotal >= build1.defensa) {
+                animacionAtaque('enemigo1', 'build1', true);
                 if (dado === 20) {
                     registrarEvento(`¡Impacto crítico! Sufres ${enemigo1.ataque + enemigo1.bonificador} de daño.`);
                     build1.vidaActual -= (enemigo1.ataque + enemigo1.bonificador);
@@ -343,13 +444,14 @@ function iniciarCombate() {
                 }
                 actualizarVentanaCombate(build1, enemigo1);
             } else {
+                animacionAtaque('enemigo1', 'build1', false);
                 registrarEvento(`${enemigo1.nombre} falló su ataque.`);
             }
         }
         turnoJugador = !turnoJugador;
         registrarEvento(`-----------------`);
     }, intervaloAtaque);
-}
+} // combate
 
 function renderizarBuilds(lista, contenedorDestino) {
     // foreach para meterlos en <div id="contenedor-lista-enemigos"></div> con nombre, vida, armadura, ataque y bonificador
@@ -418,7 +520,7 @@ function renderizarBuilds(lista, contenedorDestino) {
                 // Actualizamos el contenido
                 document.getElementById("titulo-build1-escogida").innerHTML = `${build1.nombre_pj} <br> (${clases[build1.clase_id]} - ${razas[build1.raza_id]})`;
                 if (build1.imagen == 1) {
-                    document.getElementById("imagen-build1").src = `../media/builds/build-${build1.id}.png`;
+                    document.getElementById("imagen-build1").src = `${rutaServidor}/uploads/builds/build-${build1.id}.png`;
                 } else {
                     document.getElementById("imagen-build1").src = `../media/builds/build-${razas[build1.raza_id]}.png`
                 }
@@ -603,6 +705,80 @@ function mostrarModalEnemigos() {
     modalContent.appendChild(botonCancelar);
 } // modal enemigos
 
+function mostrarModalMensaje(titulo, mensaje, onConfirm = null) {
+    // Si ya existe una, la borramos primero
+    const anterior = document.getElementById("modal-mensaje");
+    if (anterior) anterior.remove();
+
+    const modal = document.createElement("div");
+    modal.id = "modal-mensaje";
+    modal.classList.add("modal-background");
+
+    const modalContent = document.createElement("div");
+    modalContent.classList.add("modal-content");
+
+    const contenedorMensaje = document.createElement("div");
+    contenedorMensaje.classList.add("contenedor-mensajes")
+
+    const h2 = document.createElement("h2");
+    h2.textContent = titulo;
+
+    const p = document.createElement("p");
+
+    if (titulo == "Error") {
+        try {
+            const parsed = JSON.parse(mensaje);
+            if (parsed && parsed.error) {
+                p.textContent = parsed.error;
+            } else {
+                p.textContent = mensaje;
+            }
+        } catch (e) {
+            // Si no es JSON válido, se usa directamente como texto
+            p.textContent = mensaje;
+        }
+    } else {
+        p.textContent = mensaje;
+    }
+
+    contenedorMensaje.appendChild(h2);
+    contenedorMensaje.appendChild(p);
+
+    if (titulo === "Confirmación" && typeof onConfirm === "function") {
+        const botonAceptar = document.createElement("button");
+        botonAceptar.textContent = "Aceptar";
+        botonAceptar.classList.add("boton-superior");
+        botonAceptar.addEventListener("click", () => {
+            modal.remove();
+            onConfirm(); // Ejecuta la acción confirmada
+        });
+
+        const botonCancelar = document.createElement("button");
+        botonCancelar.textContent = "Cancelar";
+        botonCancelar.classList.add("boton-superior");
+        botonCancelar.addEventListener("click", () => modal.remove());
+
+        contenedorMensaje.appendChild(botonAceptar);
+        contenedorMensaje.appendChild(botonCancelar);
+    } else {
+        const boton = document.createElement("button");
+        boton.textContent = "Aceptar";
+        boton.classList.add("boton-superior");
+        boton.addEventListener("click", () => modal.remove());
+        contenedorMensaje.appendChild(boton);
+    }
+
+    modalContent.appendChild(contenedorMensaje);
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+} // modal mensajes
+
 /*-------------------------------------------------------------------------Listeners-------------------------------------------------------------------*/
 // botones lista enemigos y cancelar
 document.getElementById("elegir-enemigo1").addEventListener("click", ()=> {
@@ -637,6 +813,7 @@ document.getElementById("boton-iniciar").addEventListener("click", () => {
         iniciarCombate();
     } else {
         console.log("No puede haber un combate si no escoges una build y un enemigo.");
+        mostrarModalMensaje("Info", "No puede haber un combate sin combatientes.");
     }
 });
 
@@ -654,6 +831,7 @@ document.getElementById("boton-pausar").addEventListener("click", () => {
 document.getElementById("boton-continuar").addEventListener("click", () => {
     if (combatePausado) {
         registrarEvento("El combate continúa...");
+        registrarEvento(`-----------------`);
         combatePausado = false;
         iniciarCombate(); // Vuelve a llamar a la función de iniciar turnos
     }
@@ -687,7 +865,33 @@ document.getElementById("boton-cerrar").addEventListener("click", () => {
 // Inicializar la UI al cargar la página
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM cargado");
-    // obtener el listado de enemigos
+    obtenerArmas()
+    .then(armas => {
+        console.log('Lista de armas:', armas);
+        listaArmas = armas;
+    })
+    .catch(error => {
+        console.error('Error al cargar las armas:', error);
+    }); // Obtener armas y guardarlas en un array
+
+    obtenerArmaduras()
+    .then(armaduras => {
+        console.log('Lista de armaduras:', armaduras);
+        listaArmaduras = armaduras;
+    })
+    .catch(error => {
+        console.error('Error al cargar las armaduras:', error);
+    }); // Obtener armaduras y guardarlas en un array
+
+    obtenerAccesorios()
+    .then(accesorios => {
+        console.log('Lista de accesorios:', accesorios);
+        listaAccesorios = accesorios;
+    })
+    .catch(error => {
+        console.error('Error al cargar los accesorios:', error);
+    }); // Obtener accesorios y guardarlos en un array
+    
     obtenerEnemigos()
     .then(enemigos => {
         console.log('Lista de Enemigos:', enemigos);
@@ -696,8 +900,8 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(error => {
         console.error('Error al cargar las builds:', error);
-    });
-    // obtener la lista de builds o si no está conectado la que se creó en la otra pagina
+    }); // obtener el listado de enemigos
+    
     obtenerBuildsDelUsuario()
     .then(builds => {
         console.log('Lista de Builds:', builds);
@@ -709,9 +913,10 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch(error => {
         console.error('Error al cargar las builds:', error);
         console.log("Cargando build del almacenamiento local");
+        personaje.id = 0;
         listaBuilds.push(personaje);
-    });
-    // listado de builds publicas
+    }); // obtener la lista de builds o si no está conectado la que se creó en la otra pagina
+    
     obtenerBuildsPublicas()
     .then(builds => {
         console.log('Builds Publicas:', builds);
@@ -720,5 +925,6 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(error => {
         console.error('Error al cargar las builds:', error);
-    });
+    }); // listado de builds publicas
+
 });

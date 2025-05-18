@@ -1,4 +1,5 @@
 console.log("Inicio Script");
+const rutaServidor = "https://baldursbuilder.onrender.com";
 
 // Listados de variables y arrays iniciales
 // Puntos disponibles iniciales
@@ -92,7 +93,7 @@ function eliminarCookie(nombreCookie) {
 function obtenerRolUsuario(token) {
     return new Promise((resolve, reject) => {
         const peticion = new XMLHttpRequest();
-        peticion.open('POST', 'http://localhost:4000/users/obtenerRol');
+        peticion.open('POST', rutaServidor + '/users/obtenerRol');
         peticion.setRequestHeader('Content-Type', 'application/json');
         peticion.send(JSON.stringify({ id: token }));
 
@@ -118,7 +119,7 @@ function obtenerRolUsuario(token) {
 function obtenerArmas() {
     return new Promise((resolve, reject) => {
         const peticion = new XMLHttpRequest();
-        peticion.open('GET', 'http://localhost:4000/armas');
+        peticion.open('GET', rutaServidor + '/armas');
 
         peticion.addEventListener("load", function () {
             if (peticion.status >= 200 && peticion.status < 300) {
@@ -142,7 +143,7 @@ function obtenerArmas() {
 function obtenerArmaduras() {
     return new Promise((resolve, reject) => {
         const peticion = new XMLHttpRequest();
-        peticion.open('GET', 'http://localhost:4000/armaduras');
+        peticion.open('GET', rutaServidor + '/armaduras');
 
         peticion.addEventListener("load", function () {
             if (peticion.status >= 200 && peticion.status < 300) {
@@ -166,7 +167,7 @@ function obtenerArmaduras() {
 function obtenerAccesorios() {
     return new Promise((resolve, reject) => {
         const peticion = new XMLHttpRequest();
-        peticion.open('GET', 'http://localhost:4000/accesorios');
+        peticion.open('GET', rutaServidor + '/accesorios');
 
         peticion.addEventListener("load", function () {
             if (peticion.status >= 200 && peticion.status < 300) {
@@ -194,7 +195,7 @@ function obtenerBuildsDelUsuario() {
         const token = sessionCookie.split('=')[1];
 
         const peticion = new XMLHttpRequest();
-        peticion.open('GET', 'http://localhost:4000/builds/misBuilds?token=' + token);
+        peticion.open('GET', rutaServidor + '/builds/misBuilds?token=' + token);
         peticion.addEventListener("load", function () {
             if (peticion.status >= 200 && peticion.status < 300) {
                 try {
@@ -224,7 +225,7 @@ function obtenerBuildsPublicas() {
         console.log(token);
         
         const peticion = new XMLHttpRequest();
-        peticion.open('GET', 'http://localhost:4000/builds/publicas?token=' + token);
+        peticion.open('GET', rutaServidor + '/builds/publicas?token=' + token);
         peticion.addEventListener("load", function () {
             if (peticion.status >= 200 && peticion.status < 300) {
                 try {
@@ -255,7 +256,7 @@ function editarBuild() {
         clase_id: parseInt(claseId)
     };
     const peticionEditar = new XMLHttpRequest();
-    peticionEditar.open("POST", "http://localhost:4000/builds/editar");
+    peticionEditar.open("POST", rutaServidor + "/builds/editar");
     peticionEditar.setRequestHeader("Content-Type", "application/json");
     peticionEditar.onload = function () {
         if (peticionEditar.status === 200) {
@@ -464,7 +465,7 @@ function actualizarUI() {
     const imagenBuild = document.getElementById("imagen-build");
 
     if (personaje.imagen === 1) {
-        imagenBuild.style.backgroundImage = `url('./media/builds/build-${personaje.id}.png')`;
+        imagenBuild.style.backgroundImage = `url('${rutaServidor}/uploads/builds/build-${personaje.id}.png')`;
     } else {
         imagenBuild.style.backgroundImage = `url('./media/builds/build-${personaje.raza}.png')`;
     }
@@ -864,7 +865,7 @@ function mostrarModalBuilds(lista, esPublica = false) {
             const buildPublica = this.dataset.publica;
             
             const peticion = new XMLHttpRequest();
-            peticion.open('GET', `http://localhost:4000/builds/${buildId}`);
+            peticion.open('GET', rutaServidor + `/builds/${buildId}`);
             peticion.addEventListener("load", function () {
                 if (peticion.status >= 200 && peticion.status < 300) {
                     try {
@@ -925,7 +926,7 @@ function mostrarModalBuilds(lista, esPublica = false) {
                         borrarImagen();
                     }
                     const peticion = new XMLHttpRequest();
-                    peticion.open("DELETE", `http://localhost:4000/builds/borrar`);
+                    peticion.open("DELETE", rutaServidor + `/builds/borrar`);
                     peticion.setRequestHeader("Content-Type", "application/json");
                     peticion.onload = function () {
                         if (peticion.status >= 200 && peticion.status < 300) {
@@ -958,7 +959,7 @@ function mostrarModalBuilds(lista, esPublica = false) {
             eliminarButton.addEventListener("click", function () {
                 const buildId = this.dataset.id;
                 const peticion = new XMLHttpRequest();
-                peticion.open('GET', `http://localhost:4000/builds/${buildId}`);
+                peticion.open('GET', rutaServidor + `/builds/${buildId}`);
                 peticion.addEventListener("load", function () {
                     if (peticion.status >= 200 && peticion.status < 300) {
                         try {
@@ -980,7 +981,7 @@ function mostrarModalBuilds(lista, esPublica = false) {
                             mostrarModalMensaje("Confirmación", "¿Estás seguro de que deseas ocultar esta build?", function () {
                                 personaje.publica = 0;
                                 const peticion = new XMLHttpRequest();
-                                peticion.open("POST", `http://localhost:4000/builds/ocultar`);
+                                peticion.open("POST", rutaServidor + `/builds/ocultar`);
                                 peticion.setRequestHeader("Content-Type", "application/json");
                                 peticion.onload = function () {
                                     if (peticion.status >= 200 && peticion.status < 300) {
@@ -1129,7 +1130,7 @@ document.getElementById("boton-crear").addEventListener("click", function () {
         clase_id: parseInt(claseId)
     };
     const peticionCrear = new XMLHttpRequest();
-    peticionCrear.open("POST", "http://localhost:4000/builds/crear");
+    peticionCrear.open("POST", rutaServidor + "/builds/crear");
     peticionCrear.setRequestHeader("Content-Type", "application/json");
     peticionCrear.onload = function () {
         if (peticionCrear.status === 200) {
@@ -1202,7 +1203,7 @@ document.getElementById("recortar-imagen").addEventListener("click", function ()
         formData.append("build_id", personaje.id);
 
         const peticionImagen = new XMLHttpRequest();
-        peticionImagen.open("POST", "http://localhost:4000/imagenes/guardar-imagen", true);
+        peticionImagen.open("POST", rutaServidor + "/imagenes/guardar-imagen", true);
 
         peticionImagen.onload = function () {
             if (peticionImagen.status >= 200 && peticionImagen.status < 300) {
@@ -1250,7 +1251,7 @@ document.getElementById("boton-borrar-imagen").addEventListener("click", () => {
 
 function borrarImagen() {
     const peticionBorrar = new XMLHttpRequest();
-    peticionBorrar.open("DELETE", `http://localhost:4000/imagenes/borrar-imagen?build_id=${personaje.id}`);
+    peticionBorrar.open("DELETE", rutaServidor + `/imagenes/borrar-imagen?build_id=${personaje.id}`);
     peticionBorrar.onload = function () {
         if (peticionBorrar.status === 200) {
             console.log("Imagen eliminada correctamente.");
