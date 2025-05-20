@@ -40,7 +40,7 @@ const borrarImagenBuild = async (req, res) => {
         }
 
         const nombreArchivo = `build-${buildId}.png`;
-        const rutaImagen = path.join(__dirname, "../../media/builds", nombreArchivo);
+        const rutaImagen = path.join(__dirname, "../uploads/builds/", nombreArchivo);
 
         if (fs.existsSync(rutaImagen)) {
             fs.unlinkSync(rutaImagen);
