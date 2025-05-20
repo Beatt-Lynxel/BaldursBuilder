@@ -272,6 +272,7 @@ function editarBuild() {
                 console.error('Error al cargar las builds:', error);
             });
             actualizarPersonaje();
+
         } else {
             console.error("Error al editar build:", peticionEditar.responseText);
             mostrarModalMensaje("Error", peticionEditar.responseText || "Ocurrió un error al editar la build.");
@@ -315,15 +316,6 @@ function actualizarPersonaje() {
     console.log("JSON actualizado:", JSON.stringify(personaje, null, 2));
     actualizarUI();
 }// Sincronizar el JSON y la UI
-
-function actualizarImagen() {
-    const imagenBuild = document.getElementById("imagen-build");
-    if (personaje.imagen === 1) {
-        imagenBuild.style.backgroundImage = `url('${rutaServidor}/uploads/builds/build-${personaje.id}.png?cacheBust=' + new Date().getTime())`;
-    } else {
-        imagenBuild.style.backgroundImage = `url('./media/builds/build-${personaje.raza}.png')`;
-    }
-} // para actualizar la imagen cuando sea necesario
 
 function actualizarUI() {
     //Atributos Pj por defecto
@@ -470,6 +462,13 @@ function actualizarUI() {
     } else {
         document.getElementById("checkbox-publica").checked = false;
     }
+    const imagenBuild = document.getElementById("imagen-build");
+
+    if (personaje.imagen === 1) {
+        imagenBuild.style.backgroundImage = `url('${rutaServidor}/uploads/builds/build-${personaje.id}.png?cacheBust=' + new Date().getTime())`;
+    } else {
+        imagenBuild.style.backgroundImage = `url('./media/builds/build-${personaje.raza}.png')`;
+    }
     console.log("ENTRA EN UI");
     
 } // Actualizar la UI
@@ -567,7 +566,6 @@ function importarPersonaje() {
                         personaje.imagen = 0;
                         actualizarCheckboxes(datos);
                         actualizarUI();
-                        actualizarImagen();
                         mostrarModalMensaje("Info", "Importación realizada correctamente.");
                     } else {
                         console.error("El archivo no tiene el formato correcto.");
@@ -889,7 +887,6 @@ function mostrarModalBuilds(lista, esPublica = false) {
                         };
                         actualizarCheckboxes(personaje);
                         actualizarUI();
-                        actualizarImagen();
                         document.getElementById("contenedor-medio").classList.remove("oculto");
                         document.getElementById("contenedor-inferior").classList.remove("oculto");
                         console.log("DATASET PUBLICA: " + buildPublica);
@@ -1155,7 +1152,6 @@ document.getElementById("boton-crear").addEventListener("click", function () {
             document.getElementById("checkbox-publica").disabled = false;
             personaje.id = respuesta.build_id;
             actualizarPersonaje();
-            actualizarImagen();
         } else {
             console.error("Error al crear build:", peticionCrear.responseText);
             mostrarModalMensaje("Error", peticionCrear.responseText || "Error al crear la build.");
@@ -1217,7 +1213,7 @@ document.getElementById("recortar-imagen").addEventListener("click", function ()
                     console.log("Imagen subida correctamente:", respuesta);
                     mostrarModalMensaje("Info", "Imagen subida correctamente.");
                     personaje.imagen = 1;
-                    actualizarImagen();
+                    actualizarPersonaje();
                 } catch (error) {
                     console.error("Error al procesar respuesta:", error);
                     mostrarModalMensaje("Error", "Error procesando la respuesta del servidor.");
@@ -1262,7 +1258,7 @@ function borrarImagen() {
             console.log("Imagen eliminada correctamente.");
             mostrarModalMensaje("Info", "Imagen eliminada correctamente.");
             personaje.imagen = 0;
-            actualizarImagen();
+            actualizarPersonaje();
         } else {
             console.error("Error al eliminar imagen:", peticionBorrar.responseText);
             mostrarModalMensaje("Error", peticionBorrar.responseText || "Ocurrió un error al eliminar la imagen.");
