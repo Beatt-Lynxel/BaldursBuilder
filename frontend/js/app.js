@@ -465,7 +465,8 @@ function actualizarUI() {
     const imagenBuild = document.getElementById("imagen-build");
 
     if (personaje.imagen === 1) {
-        imagenBuild.style.backgroundImage = `url('${rutaServidor}/uploads/builds/build-${personaje.id}.png')`;
+        imagenBuild.style.backgroundImage = `url('${rutaServidor}/uploads/builds/build-${personaje.id}.png?cacheBust=' + new Date().getTime())`;
+
     } else {
         imagenBuild.style.backgroundImage = `url('./media/builds/build-${personaje.raza}.png')`;
     }
