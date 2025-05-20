@@ -18,6 +18,11 @@ const guardarImagenBuild = async (req, res) => {
         const nombreArchivo = `build-${buildId}.png`;
         const rutaSalida = path.join(outputDir, nombreArchivo);
 
+        // Borrar si ya existía una imagen anterior y evitar errores de caché
+        if (fs.existsSync(rutaSalida)) {
+            fs.unlinkSync(rutaSalida);
+        }
+
         await sharp(req.file.buffer)
             .resize(350, 350)
             .png()

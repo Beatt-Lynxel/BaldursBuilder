@@ -465,7 +465,7 @@ function actualizarUI() {
     const imagenBuild = document.getElementById("imagen-build");
 
     if (personaje.imagen === 1) {
-        imagenBuild.style.backgroundImage = `url('${rutaServidor}/uploads/builds/build-${personaje.id}.png?cacheBust=' + new Date().getTime())`;
+        imagenBuild.style.backgroundImage = `url('${rutaServidor}/uploads/builds/build-${personaje.id}.png')`;
     } else {
         imagenBuild.style.backgroundImage = `url('./media/builds/build-${personaje.raza}.png')`;
     }
@@ -563,7 +563,6 @@ function importarPersonaje() {
                             sabiduria: datos.sabiduria,
                             carisma: datos.carisma
                         };
-                        personaje.imagen = 0;
                         actualizarCheckboxes(datos);
                         actualizarUI();
                         mostrarModalMensaje("Info", "Importación realizada correctamente.");
