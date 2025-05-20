@@ -25,7 +25,7 @@ const app = express();
 app.use(cors());
 // hacemos que use express para que parsee los cuerpos de las solicitudes en JSON
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { maxAge: 0 }));
 //distintas rutas a usar:
 // raiz, se suele usar para el index
 app.get('/', (req, res) => {
