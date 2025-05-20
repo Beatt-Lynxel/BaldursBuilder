@@ -317,6 +317,16 @@ function actualizarPersonaje() {
     actualizarUI();
 }// Sincronizar el JSON y la UI
 
+function actualizarImagen() {
+    const imagenBuild = document.getElementById("imagen-build");
+
+    if (personaje.imagen === 1) {
+        imagenBuild.style.backgroundImage = `url('${rutaServidor}/uploads/builds/build-${personaje.id}.png#${new Date().getTime()}')`;
+    } else {
+        imagenBuild.style.backgroundImage = `url('./media/builds/build-${personaje.raza}.png')`;
+    }
+}
+
 function actualizarUI() {
     //Atributos Pj por defecto
     let ataquePj = 6;
@@ -462,13 +472,6 @@ function actualizarUI() {
     } else {
         document.getElementById("checkbox-publica").checked = false;
     }
-    const imagenBuild = document.getElementById("imagen-build");
-
-    if (personaje.imagen === 1) {
-        imagenBuild.style.backgroundImage = `url('${rutaServidor}/uploads/builds/build-${personaje.id}.png#${new Date().getTime()}')`;
-    } else {
-        imagenBuild.style.backgroundImage = `url('./media/builds/build-${personaje.raza}.png')`;
-    }
     console.log("ENTRA EN UI");
     
 } // Actualizar la UI
@@ -564,6 +567,8 @@ function importarPersonaje() {
                             carisma: datos.carisma
                         };
                         actualizarCheckboxes(datos);
+                        personaje.imagen = 0;
+                        actualizarImagen();
                         actualizarUI();
                         mostrarModalMensaje("Info", "Importación realizada correctamente.");
                     } else {
@@ -885,6 +890,7 @@ function mostrarModalBuilds(lista, esPublica = false) {
                             carisma: datosBuild.carisma
                         };
                         actualizarCheckboxes(personaje);
+                        actualizarImagen();
                         actualizarUI();
                         document.getElementById("contenedor-medio").classList.remove("oculto");
                         document.getElementById("contenedor-inferior").classList.remove("oculto");
@@ -1212,6 +1218,7 @@ document.getElementById("recortar-imagen").addEventListener("click", function ()
                     console.log("Imagen subida correctamente:", respuesta);
                     mostrarModalMensaje("Info", "Imagen subida correctamente.");
                     personaje.imagen = 1;
+                    actualizarImagen();
                     actualizarPersonaje();
                 } catch (error) {
                     console.error("Error al procesar respuesta:", error);
@@ -1257,6 +1264,7 @@ function borrarImagen() {
             console.log("Imagen eliminada correctamente.");
             mostrarModalMensaje("Info", "Imagen eliminada correctamente.");
             personaje.imagen = 0;
+            actualizarImagen();
             actualizarPersonaje();
         } else {
             console.error("Error al eliminar imagen:", peticionBorrar.responseText);
