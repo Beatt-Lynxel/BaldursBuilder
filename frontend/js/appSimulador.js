@@ -914,6 +914,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error('Error al cargar las builds:', error);
         console.log("Cargando build del almacenamiento local");
         personaje.id = 0;
+        personaje.imagen = 0;
         listaBuilds.push(personaje);
     }); // obtener la lista de builds o si no está conectado la que se creó en la otra pagina
     
