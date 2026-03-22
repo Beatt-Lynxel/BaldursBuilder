@@ -31,26 +31,27 @@ const clases = {
 };
 // Mapeo de ID de raza a nombre de raza
 const razas = {
-    1: "Elfo",
+    1: "Humano",
     2: "Enano",
-    3: "Tiefling",
-    4: "Drow",
-    5: "Humano",
-    6: "Gnomo",
-    7: "Mediano",
-    8: "Licántropo",
-    9: "Semielfo",
-    10: "Draconido",
-    11: "Tabaxi"
+    3: "Elfo",
+    4: "Felinix",
+    5: "Houndkin",
+    6: "Reptilis",
+    7: "Rodentia",
+    8: "Draconide",
+    9: "Ursin",
+    10: "Avian",
+    11: "Angel",
+    12: "Demonio"
 };
 // JSON del personaje (cambiar a objeto)
 let personaje = {
     nombre: "Nueva Build",
     nombre_pj: "Tav",
     raza_id: 1,
-    raza: "Elfo",
+    raza: "Humano",
     clase_id: 1,
-    clase: "Bárbaro",
+    clase: "Guerrero",
     historia: "",
     fuerza: 8,
     destreza: 8,
@@ -759,21 +760,45 @@ function mostrarModalMensaje(titulo, mensaje, onConfirm = null) {
 
     const p = document.createElement("p");
 
-    if (titulo == "Error") {
-        try {
-            const parsed = JSON.parse(mensaje);
-            if (parsed && parsed.error) {
-                p.textContent = parsed.error;
-            } else {
+    switch (titulo) {
+        case "Error":
+            try {
+                const parsed = JSON.parse(mensaje);
+                if (parsed && parsed.error) {
+                    p.textContent = parsed.error;
+                } else {
+                    p.textContent = mensaje;
+                }
+            } catch (e) {
+                // Si no es JSON válido, se usa directamente como texto
                 p.textContent = mensaje;
             }
-        } catch (e) {
-            // Si no es JSON válido, se usa directamente como texto
+        break;
+
+        case "Intro":
+            p.innerHTML = mensaje;
+        break;
+    
+        default:
             p.textContent = mensaje;
-        }
-    } else {
-        p.textContent = mensaje;
+        break;
     }
+
+    // if (titulo == "Error") {
+    //     try {
+    //         const parsed = JSON.parse(mensaje);
+    //         if (parsed && parsed.error) {
+    //             p.textContent = parsed.error;
+    //         } else {
+    //             p.textContent = mensaje;
+    //         }
+    //     } catch (e) {
+    //         // Si no es JSON válido, se usa directamente como texto
+    //         p.textContent = mensaje;
+    //     }
+    // } else {
+    //     p.textContent = mensaje;
+    // }
 
     contenedorMensaje.appendChild(h2);
     contenedorMensaje.appendChild(p);
@@ -1373,7 +1398,21 @@ document.getElementById("checkbox-publica").addEventListener("change", function 
 
 // Inicializar la UI al cargar la página
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("imagen-build").style.backgroundImage = `url('./media/builds/build-elfo.png')`;
+    const introVista = document.cookie.split('; ').find(row => row.startsWith('intro_vista'));
+    if (introVista) {
+        // mostrarModalMensaje("Error", "Intro vista");
+        document.cookie = "intro_vista" + "; path=/; max-age=" + (60 * 60);
+    } else {
+        mostrarModalMensaje("Intro", `Este es un proyecto de practica asi que por favor tened en cuenta lo siguiente:
+        <br><br>1. El servidor y base de datos al ser gratuitos pueden tardar en enviar la respuesta de la lista de builds
+        públicas o estar caidos por completo aunque los reviso cada semana.
+        <br><br>2. El servidor no tiene memoria persistente y las imagenes que subais no se guardarán permanentemente.
+        <br><br>3. El sistema de creacion de cuentas es solo para practica y aunque se encriptan los datos en el lado 
+        servidor y nunca llegan a la base de datos recomiendo no hacer cuentas con mails reales y no hay sistema de 
+        recuperación de contraseña.`);
+        document.cookie = "intro_vista" + "; path=/; max-age=" + (60 * 60);
+    }
+    document.getElementById("imagen-build").style.backgroundImage = `url('./media/builds/build-Humano.png')`;
     console.log("DOM cargado");
     // actualizarPersonaje();
 });

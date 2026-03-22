@@ -18,10 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `proyectobaldursbuilderv4`
+-- Base de datos: `fantasyrolbuilder`
 --
-CREATE DATABASE IF NOT EXISTS `proyectobaldursbuilder` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `proyectobaldursbuilder`;
+CREATE DATABASE IF NOT EXISTS `fantasyrolbuilder` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `fantasyrolbuilder`;
 
 -- --------------------------------------------------------
 
@@ -213,18 +213,22 @@ CREATE TABLE `builds` (
 --
 
 INSERT INTO `builds` (`id`, `user_id`, `nombre`, `nombre_pj`, `raza_id`, `clase_id`, `historia`, `fuerza`, `destreza`, `constitucion`, `inteligencia`, `sabiduria`, `carisma`, `bonus1`, `bonus2`, `arma`, `armadura`, `accesorio1`, `accesorio2`, `imagen`, `publica`) VALUES
-(1, 1, 'El rugido de la tormenta', 'Tharok Puño de Trueno', 10, 1, 'Un bárbaro draconido exiliado, que busca redención en las batallas del norte.', 15, 14, 14, 9, 9, 10, 'fuerza', 'constitucion', 3, 5, 4, 16, 0, 1),
-(2, 1, 'Susurros de sombras', 'Velmira Sombrafina', 4, 12, 'Una pícaro drow que aprendió a sobrevivir entre intrigas y traiciones.', 10, 15, 12, 14, 8, 13, 'destreza', 'inteligencia', 10, 2, 12, 10, 0, 0),
-(3, 1, 'Canción de la luna', 'Elarion Brisaveloz', 1, 2, 'Bardo elfo viajero que canta sobre tierras olvidadas y misterios antiguos.', 9, 14, 12, 11, 11, 15, 'carisma', 'destreza', 32, 11, 32, 31, 0, 0),
-(4, 1, 'Juramento de ceniza', 'Darmik Martillo de Fuego', 2, 11, 'Paladín enano que perdió su orden, y ahora impone justicia con puño firme.', 15, 11, 13, 9, 10, 14, 'fuerza', 'carisma', 16, 15, 17, 15, 0, 0),
-(5, 1, 'Furia natural', 'Kaela Ramaoscura', 9, 5, 'Druida semielfa conectada con la ira ancestral del bosque.', 9, 13, 15, 10, 15, 9, 'sabiduria', 'constitucion', 27, 3, 13, 29, 0, 1),
-(6, 2, 'Llama interior', 'Zarek Corazón Ardiente', 3, 8, 'Hechicero tiefling perseguido por su propio linaje demoníaco.', 12, 14, 14, 15, 8, 8, 'inteligencia', 'constitucion', 22, 7, 19, 20, 0, 1),
-(7, 2, 'Filo del viento', 'Nyssa Caminavientos', 11, 6, 'Exploradora tabaxi veloz como el relámpago, guardiana de rutas perdidas.', 9, 15, 14, 10, 14, 9, 'destreza', 'sabiduria', 9, 9, 10, 1, 0, 0),
-(8, 2, 'Vínculo celestial', 'Lioren Luz Serena', 5, 4, 'Clérigo humano devoto de un dios olvidado, guía de almas perdidas.', 8, 10, 14, 10, 15, 14, 'sabiduria', 'carisma', 26, 17, 18, 19, 1, 1),
-(9, 2, 'Rey de las Setas', 'Diego Seta Micelio', 6, 5, 'Un gnomo con una poderosa conexión con las setas pudiendo erradicar reinos con su poder.', 9, 15, 14, 10, 14, 9, 'destreza', 'sabiduria', 27, 18, 25, 26, 0, 1),
-(10, 2, 'Perro Rabioso', 'Lupo el Pulgoso', 8, 1, 'Un licántropo de bajo estatus que está obsesionado con la pelea', 14, 15, 14, 10, 9, 9, 'destreza', 'fuerza', 3, 14, 25, 26, 0, 1),
-(11, 3, 'Canción de la Ventisca', 'Beatt Lynxel', 11, 2, 'Un legendario tabaxi demasiado perezoso para ir de aventuras pero que mantendrá seguro su lugar de descanso ante cualquier amenaza con una ventisca capaz de congelar el mismisimo infierno.', 9, 14, 12, 11, 11, 15, 'carisma', 'destreza', 42, 11, 36, 35, 1, 1),
-(12, 3, 'Garra de Sombras', 'Chartreus Dakar', 8, 12, 'Licántropo infernal con dominio sobre las sombras, hará lo que sea para proteger a los suyos.', 12, 14, 15, 11, 11, 9, 'constitucion', 'destreza', 14, 18, 12, 11, 1, 1);
+(1, 1, 'Baladas del Alba', 'Edrin Cantares', 1, 2, 'Bardo humano de tabernas y caminos reales, convierte historias comunes en himnos inolvidables y anima a sus aliados con melodías antiguas.', 8, 10, 12, 10, 12, 15, 'carisma', 'sabiduria', 37, 11, 31, 34, 0, 1),
+(2, 1, 'Juramento de Hierro', 'Brokk Martilloalba', 2, 11, 'Paladín enano que juró proteger fortalezas sagradas y peregrinos de montaña, firme como la roca y severo con los impíos.', 14, 8, 14, 8, 12, 12, 'fuerza', 'constitucion', 2, 17, 6, 17, 0, 1),
+(3, 1, 'Sendero del Ciervo', 'Faelar Brisaverde', 3, 6, 'Explorador elfo criado entre bosques antiguos, rastrea bestias y bandidos con paciencia sobrenatural y una puntería impecable.', 8, 15, 11, 10, 14, 10, 'destreza', 'sabiduria', 12, 12, 10, 29, 0, 1),
+(4, 2, 'Sombra de Terciopelo', 'Nyra Zarpaluna', 4, 12, 'Pícara felinix de callejones brillantes y tejados húmedos, roba secretos mejor que oro y desaparece antes de ser mirada dos veces.', 8, 15, 10, 12, 10, 12, 'destreza', 'inteligencia', 13, 1, 7, 20, 0, 1),
+(5, 1, 'Puño del Camino Sereno', 'Kael ColmilloManso', 5, 10, 'Monje houndkin errante que perfeccionó cuerpo y mente en monasterios apartados, enfrentando la violencia con disciplina y resistencia.', 10, 14, 14, 8, 12, 10, 'destreza', 'constitucion', 18, 15, 11, 16, 0, 1),
+(6, 2, 'Escamas del Saber', 'Sszira Veloarcano', 6, 9, 'Maga reptilis fascinada por ruinas sumergidas y lenguas muertas, domina fórmulas complejas con una mente fría y meticulosa.', 8, 10, 11, 15, 12, 10, 'inteligencia', 'sabiduria', 27, 8, 22, 23, 0, 1),
+(7, 2, 'Raíz y Ceniza', 'Mira Musgorris', 7, 5, 'Druida rodentia guardiana de madrigueras sagradas y claros ocultos, escucha el pulso de la tierra y convoca la furia suave del bosque.', 8, 12, 12, 10, 15, 10, 'sabiduria', 'constitucion', 31, 3, 28, 13, 0, 1),
+(8, 1, 'Furia del Brote Escarlata', 'Draegor Escamarruja', 8, 1, 'Guerrero draconide veterano de mil duelos, avanza como una muralla viviente y rompe líneas enemigas con brutal precisión.', 15, 10, 14, 8, 10, 8, 'fuerza', 'constitucion', 6, 18, 4, 18, 0, 1),
+(9, 1, 'Rugido de la Montaña', 'Orsik Peñafiera', 9, 7, 'Bárbaro ursin nacido en cumbres heladas, combate con ferocidad ancestral y una resistencia temible forjada por el clima salvaje.', 15, 10, 14, 8, 10, 8, 'fuerza', 'constitucion', 5, 13, 5, 16, 0, 1),
+(10, 2, 'Llama del Cielo Errante', 'Aelia Plumardor', 10, 8, 'Hechicera avian tocada por una magia innata de tormentas y auroras, desata poder puro con elegancia luminosa y presencia imponente.', 8, 10, 12, 10, 10, 15, 'carisma', 'constitucion', 40, 7, 36, 15, 0, 1),
+(11, 2, 'Gracia del Firmamento', 'Serapha Luz de Alba', 11, 4, 'Clériga angel consagrada a sanar, proteger y juzgar con compasión, porta una fe antigua que brilla incluso en la noche más oscura.', 8, 10, 12, 10, 15, 12, 'sabiduria', 'carisma', 34, 16, 30, 36, 0, 1),
+(12, 2, 'Pacto de Ceniza', 'Velka Sombrafina', 12, 3, 'Bruja demonio que selló un pacto con entidades del vacío, manipula voluntades y energías prohibidas con un encanto inquietante.', 8, 10, 12, 10, 10, 15, 'carisma', 'inteligencia', 39, 7, 32, 22, 0, 1),
+(13, 2, 'Vínculo celestial', 'Lioren Luz Serena', 5, 4, 'Clérigo humano devoto de un dios olvidado, guía almas perdidas en campos de batalla abandonados.', 8, 10, 14, 10, 15, 14, 'sabiduria', 'carisma', 26, 17, 18, 19, 1, 1),
+(14, 2, 'Drakecuoya', 'Drake Strong', 5, 4, 'Clérigo humano devoto de un dios olvidado, guía de almas perdidas.', 8, 10, 14, 10, 15, 14, 'sabiduria', 'carisma', 26, 17, 18, 19, 1, 1),
+(15, 3, 'Canción de la Ventisca', 'Beatt Lynxel', 11, 2, 'Un legendario felinix alado demasiado perezoso para ir de aventuras pero que mantendrá seguro su lugar de descanso ante cualquier amenaza con una ventisca capaz de congelar el mismisimo infierno.', 9, 14, 12, 11, 11, 15, 'carisma', 'destreza', 42, 11, 36, 35, 1, 1),
+(16, 3, 'Garra de las Sombras', 'Chartreus Dakar', 8, 12, 'Un misterioso houndkin lobo calavera con dominio sobre las sombras, hará lo que sea para proteger a los suyos, en especial a su amado felino y sus cachorros.', 12, 14, 15, 11, 11, 9, 'constitucion', 'destreza', 14, 18, 12, 11, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -242,13 +246,13 @@ CREATE TABLE `clases` (
 --
 
 INSERT INTO `clases` (`id`, `nombre`) VALUES
-(1, 'Bárbaro'),
+(1, 'Guerrero'),
 (2, 'Bardo'),
 (3, 'Brujo'),
 (4, 'Clérigo'),
 (5, 'Druida'),
 (6, 'Explorador'),
-(7, 'Guerrero'),
+(7, 'Bárbaro'),
 (8, 'Hechicero'),
 (9, 'Mago'),
 (10, 'Monje'),
@@ -312,17 +316,18 @@ CREATE TABLE `razas` (
 --
 
 INSERT INTO `razas` (`id`, `nombre`) VALUES
-(1, 'Elfo'),
+(1, 'Humano'),
 (2, 'Enano'),
-(3, 'Tiefling'),
-(4, 'Drow'),
-(5, 'Humano'),
-(6, 'Gnomo'),
-(7, 'Mediano'),
-(8, 'Licántropo'),
-(9, 'Semielfo'),
-(10, 'Draconido'),
-(11, 'Tabaxi');
+(3, 'Elfo'),
+(4, 'Felinix'),
+(5, 'Houndkin'),
+(6, 'Reptilis'),
+(7, 'Rodentia'),
+(8, 'Draconide'),
+(9, 'Ursin'),
+(10, 'Avian'),
+(11, 'Angel'),
+(12, 'Demonio');
 
 -- --------------------------------------------------------
 
@@ -459,7 +464,7 @@ ALTER TABLE `armas`
 -- AUTO_INCREMENT de la tabla `builds`
 --
 ALTER TABLE `builds`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `clases`
@@ -477,7 +482,7 @@ ALTER TABLE `enemigos`
 -- AUTO_INCREMENT de la tabla `razas`
 --
 ALTER TABLE `razas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
