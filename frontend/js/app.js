@@ -1,5 +1,5 @@
 console.log("Inicio Script");
-const rutaServidor = "https://fantasyrolbuilder.onrender.com";
+const rutaServidor = "https://fantasyrolbuilderappweb.onrender.com";
 
 // Listados de variables y arrays iniciales
 // Puntos disponibles iniciales
