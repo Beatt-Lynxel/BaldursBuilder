@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS "fantasyrolbuilder" /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE IF NOT EXISTS "fantasyrolbuilder";
 USE `fantasyrolbuilder`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
@@ -6,24 +6,10 @@ USE `fantasyrolbuilder`;
 -- ------------------------------------------------------
 -- Server version	8.0.45
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
 
 --
 -- GTID state at the beginning of the backup 
 --
-
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'd6d45f77-2624-11f1-87b8-a622933c7012:1-58';
 
 --
 -- Table structure for table `accesorios`
@@ -100,63 +86,6 @@ LOCK TABLES `armas` WRITE;
 /*!40000 ALTER TABLE `armas` DISABLE KEYS */;
 INSERT INTO `armas` VALUES (1,'Hacha Pétrea',8,'fuerza'),(2,'Espada de Hierro',8,'fuerza'),(3,'Hacha del Leñador',10,'fuerza'),(4,'Mandoble del Coloso',10,'fuerza'),(5,'Mandoble de los Titanes',12,'fuerza'),(6,'Espada de Acero Negro',12,'fuerza'),(7,'Guadaña de Luna Roja',13,'fuerza'),(8,'Dagas Oxidadas',8,'destreza'),(9,'Arco de Roble Antiguo',8,'destreza'),(10,'Ballesta Puercoespín Venenoso',10,'destreza'),(11,'Dagas del Susurro',10,'destreza'),(12,'Arco del Ciervo Blanco',12,'destreza'),(13,'Estilete del Silencio',12,'destreza'),(14,'Garras de Sombra',13,'destreza'),(15,'Porra de Roble Antiguo',8,'constitucion'),(16,'Maza de Hierro',8,'constitucion'),(17,'Porra Tribal Endurecida',10,'constitucion'),(18,'Martillo del Guardián',10,'constitucion'),(19,'Maza de la Nécora Gargantuesca',12,'constitucion'),(20,'Martillo del Gigante',12,'constitucion'),(21,'Gran Escudo Devorador',13,'constitucion'),(22,'Bastón de Roble Antiguo',8,'inteligencia'),(23,'Orbe Arcano',8,'inteligencia'),(24,'Grimorio de Alquimista',10,'inteligencia'),(25,'Bastón del Conocimiento',10,'inteligencia'),(26,'Orbe de Sabiduría Prohibida',12,'inteligencia'),(27,'Grimorio Etéreo',12,'inteligencia'),(28,'Revolver Rúnico Multiusos',13,'inteligencia'),(29,'Cetro del oráculo',8,'sabiduria'),(30,'Escrituras del Pastor',8,'sabiduria'),(31,'Báculo del equilibrio eterno',10,'sabiduria'),(32,'Cetro del Juicio',10,'sabiduria'),(33,'Báculo de la Verdad',12,'sabiduria'),(34,'Escrituras Divinas',12,'sabiduria'),(35,'Baraja de la Tarotista',13,'sabiduria'),(36,'Espada encantada de palabras',8,'carisma'),(37,'Lira Encantada',8,'carisma'),(38,'Cristal del Encantador',10,'carisma'),(39,'Cadenas de Brujo',10,'carisma'),(40,'Lira de la Sirena',12,'carisma'),(41,'Espada y Escudo Celestiales',12,'carisma'),(42,'Drones Armónicos',13,'carisma');
 /*!40000 ALTER TABLE `armas` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `builds`
---
-
-DROP TABLE IF EXISTS `builds`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `builds` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `nombre` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `nombre_pj` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `raza_id` int DEFAULT NULL,
-  `clase_id` int DEFAULT NULL,
-  `historia` text COLLATE utf8mb4_general_ci NOT NULL,
-  `fuerza` int DEFAULT '8',
-  `destreza` int DEFAULT '8',
-  `constitucion` int DEFAULT '8',
-  `inteligencia` int DEFAULT '8',
-  `sabiduria` int DEFAULT '8',
-  `carisma` int DEFAULT '8',
-  `bonus1` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `bonus2` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `arma` int DEFAULT NULL,
-  `armadura` int DEFAULT NULL,
-  `accesorio1` int DEFAULT NULL,
-  `accesorio2` int DEFAULT NULL,
-  `imagen` int NOT NULL DEFAULT '0',
-  `publica` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  KEY `raza_id` (`raza_id`),
-  KEY `clase_id` (`clase_id`),
-  KEY `arma` (`arma`),
-  KEY `armadura` (`armadura`),
-  KEY `accesorio1` (`accesorio1`),
-  KEY `accesorio2` (`accesorio2`),
-  CONSTRAINT `builds_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `builds_ibfk_2` FOREIGN KEY (`raza_id`) REFERENCES `razas` (`id`),
-  CONSTRAINT `builds_ibfk_3` FOREIGN KEY (`clase_id`) REFERENCES `clases` (`id`),
-  CONSTRAINT `builds_ibfk_4` FOREIGN KEY (`arma`) REFERENCES `armas` (`id`),
-  CONSTRAINT `builds_ibfk_5` FOREIGN KEY (`armadura`) REFERENCES `armaduras` (`id`),
-  CONSTRAINT `builds_ibfk_6` FOREIGN KEY (`accesorio1`) REFERENCES `accesorios` (`id`),
-  CONSTRAINT `builds_ibfk_7` FOREIGN KEY (`accesorio2`) REFERENCES `accesorios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `builds`
---
-
-LOCK TABLES `builds` WRITE;
-/*!40000 ALTER TABLE `builds` DISABLE KEYS */;
-INSERT INTO `builds` VALUES (1,1,'Baladas del Alba','Edrin Cantares',1,2,'Bardo humano de tabernas y caminos reales, convierte historias comunes en himnos inolvidables y anima a sus aliados con melodías antiguas.',8,10,12,10,12,15,'carisma','sabiduria',37,11,31,34,0,1),(2,1,'Juramento de Hierro','Brokk Martilloalba',2,11,'Paladín enano que juró proteger fortalezas sagradas y peregrinos de montaña, firme como la roca y severo con los impíos.',14,8,14,8,12,12,'fuerza','constitucion',2,17,6,17,0,1),(3,1,'Sendero del Ciervo','Faelar Brisaverde',3,6,'Explorador elfo criado entre bosques antiguos, rastrea bestias y bandidos con paciencia sobrenatural y una puntería impecable.',8,15,11,10,14,10,'destreza','sabiduria',12,12,10,29,0,1),(4,2,'Sombra de Terciopelo','Nyra Zarpaluna',4,12,'Pícara felinix de callejones brillantes y tejados húmedos, roba secretos mejor que oro y desaparece antes de ser mirada dos veces.',8,15,10,12,10,12,'destreza','inteligencia',13,1,7,20,0,1),(5,1,'Puño del Camino Sereno','Kael ColmilloManso',5,10,'Monje houndkin errante que perfeccionó cuerpo y mente en monasterios apartados, enfrentando la violencia con disciplina y resistencia.',10,14,14,8,12,10,'destreza','constitucion',18,15,11,16,0,1),(6,2,'Escamas del Saber','Sszira Veloarcano',6,9,'Maga reptilis fascinada por ruinas sumergidas y lenguas muertas, domina fórmulas complejas con una mente fría y meticulosa.',8,10,11,15,12,10,'inteligencia','sabiduria',27,8,22,23,0,1),(7,2,'Raíz y Ceniza','Mira Musgorris',7,5,'Druida rodentia guardiana de madrigueras sagradas y claros ocultos, escucha el pulso de la tierra y convoca la furia suave del bosque.',8,12,12,10,15,10,'sabiduria','constitucion',31,3,28,13,0,1),(8,1,'Furia del Brote Escarlata','Draegor Escamarruja',8,1,'Guerrero draconide veterano de mil duelos, avanza como una muralla viviente y rompe líneas enemigas con brutal precisión.',15,10,14,8,10,8,'fuerza','constitucion',6,18,4,18,0,1),(9,1,'Rugido de la Montaña','Orsik Peñafiera',9,7,'Bárbaro ursin nacido en cumbres heladas, combate con ferocidad ancestral y una resistencia temible forjada por el clima salvaje.',15,10,14,8,10,8,'fuerza','constitucion',5,13,5,16,0,1),(10,2,'Llama del Cielo Errante','Aelia Plumardor',10,8,'Hechicera avian tocada por una magia innata de tormentas y auroras, desata poder puro con elegancia luminosa y presencia imponente.',8,10,12,10,10,15,'carisma','constitucion',40,7,36,15,0,1),(11,2,'Gracia del Firmamento','Serapha Luz de Alba',11,4,'Clériga angel consagrada a sanar, proteger y juzgar con compasión, porta una fe antigua que brilla incluso en la noche más oscura.',8,10,12,10,15,12,'sabiduria','carisma',34,16,30,36,0,1),(12,2,'Pacto de Ceniza','Velka Sombrafina',12,3,'Bruja demonio que selló un pacto con entidades del vacío, manipula voluntades y energías prohibidas con un encanto inquietante.',8,10,12,10,10,15,'carisma','inteligencia',39,7,32,22,0,1),(13,2,'Vínculo celestial','Lioren Luz Serena',5,4,'Clérigo humano devoto de un dios olvidado, guía almas perdidas en campos de batalla abandonados.',8,10,14,10,15,14,'sabiduria','carisma',26,17,18,19,1,1),(14,2,'Drakecuoya','Drake Strong',5,4,'Clérigo humano devoto de un dios olvidado, guía de almas perdidas.',8,10,14,10,15,14,'sabiduria','carisma',26,17,18,19,1,1),(15,3,'Canción de la Ventisca','Beatt Lynxel',11,2,'Un legendario felinix alado demasiado perezoso para ir de aventuras pero que mantendrá seguro su lugar de descanso ante cualquier amenaza con una ventisca capaz de congelar el mismisimo infierno.',9,14,12,11,11,15,'carisma','destreza',42,11,36,35,1,1),(16,3,'Garra de las Sombras','Chartreus Dakar',8,12,'Un misterioso houndkin lobo calavera con dominio sobre las sombras, hará lo que sea para proteger a los suyos, en especial a su amado felino y sus cachorros.',12,14,15,11,11,9,'constitucion','destreza',14,18,12,11,1,1);
-/*!40000 ALTER TABLE `builds` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -288,15 +217,60 @@ LOCK TABLES `usuarios` WRITE;
 INSERT INTO `usuarios` VALUES (1,'testadmin@email.com','$2b$10$TtM.E4eGEOuTjJdIEXQ4weFph/s8Vclls48jDjlulyVL7yFl6VzK2',2,1),(2,'testuser@email.com','$2b$10$/slfJbCPZBMcouMWHrpSGuY8QVbU7nC8Hz6kM9IdmsReTYxlYGNLy',1,1),(3,'beatt@gmail.es','$2b$10$l.kC18/VK.2Pz8pWFdM90uU7wkbBd6TO3xkY5HmgTnihYkYSmU4Uq',2,1);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+--
+-- Table structure for table `builds`
+--
 
--- Dump completed on 2026-03-22 20:56:28
+DROP TABLE IF EXISTS `builds`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `builds` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `nombre` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `nombre_pj` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `raza_id` int DEFAULT NULL,
+  `clase_id` int DEFAULT NULL,
+  `historia` text COLLATE utf8mb4_general_ci NOT NULL,
+  `fuerza` int DEFAULT '8',
+  `destreza` int DEFAULT '8',
+  `constitucion` int DEFAULT '8',
+  `inteligencia` int DEFAULT '8',
+  `sabiduria` int DEFAULT '8',
+  `carisma` int DEFAULT '8',
+  `bonus1` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `bonus2` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `arma` int DEFAULT NULL,
+  `armadura` int DEFAULT NULL,
+  `accesorio1` int DEFAULT NULL,
+  `accesorio2` int DEFAULT NULL,
+  `imagen` int NOT NULL DEFAULT '0',
+  `publica` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `raza_id` (`raza_id`),
+  KEY `clase_id` (`clase_id`),
+  KEY `arma` (`arma`),
+  KEY `armadura` (`armadura`),
+  KEY `accesorio1` (`accesorio1`),
+  KEY `accesorio2` (`accesorio2`),
+  CONSTRAINT `builds_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `builds_ibfk_2` FOREIGN KEY (`raza_id`) REFERENCES `razas` (`id`),
+  CONSTRAINT `builds_ibfk_3` FOREIGN KEY (`clase_id`) REFERENCES `clases` (`id`),
+  CONSTRAINT `builds_ibfk_4` FOREIGN KEY (`arma`) REFERENCES `armas` (`id`),
+  CONSTRAINT `builds_ibfk_5` FOREIGN KEY (`armadura`) REFERENCES `armaduras` (`id`),
+  CONSTRAINT `builds_ibfk_6` FOREIGN KEY (`accesorio1`) REFERENCES `accesorios` (`id`),
+  CONSTRAINT `builds_ibfk_7` FOREIGN KEY (`accesorio2`) REFERENCES `accesorios` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `builds`
+--
+
+LOCK TABLES `builds` WRITE;
+/*!40000 ALTER TABLE `builds` DISABLE KEYS */;
+INSERT INTO `builds` VALUES (1,1,'Baladas del Alba','Edrin Cantares',1,2,'Bardo humano de tabernas y caminos reales, convierte historias comunes en himnos inolvidables y anima a sus aliados con melodías antiguas.',8,10,12,10,12,15,'carisma','sabiduria',37,11,31,34,0,1),(2,1,'Juramento de Hierro','Brokk Martilloalba',2,11,'Paladín enano que juró proteger fortalezas sagradas y peregrinos de montaña, firme como la roca y severo con los impíos.',14,8,14,8,12,12,'fuerza','constitucion',2,17,6,17,0,1),(3,1,'Sendero del Ciervo','Faelar Brisaverde',3,6,'Explorador elfo criado entre bosques antiguos, rastrea bestias y bandidos con paciencia sobrenatural y una puntería impecable.',8,15,11,10,14,10,'destreza','sabiduria',12,12,10,29,0,1),(4,2,'Sombra de Terciopelo','Nyra Zarpaluna',4,12,'Pícara felinix de callejones brillantes y tejados húmedos, roba secretos mejor que oro y desaparece antes de ser mirada dos veces.',8,15,10,12,10,12,'destreza','inteligencia',13,1,7,20,0,1),(5,1,'Puño del Camino Sereno','Kael ColmilloManso',5,10,'Monje houndkin errante que perfeccionó cuerpo y mente en monasterios apartados, enfrentando la violencia con disciplina y resistencia.',10,14,14,8,12,10,'destreza','constitucion',18,15,11,16,0,1),(6,2,'Escamas del Saber','Sszira Veloarcano',6,9,'Maga reptilis fascinada por ruinas sumergidas y lenguas muertas, domina fórmulas complejas con una mente fría y meticulosa.',8,10,11,15,12,10,'inteligencia','sabiduria',27,8,22,23,0,1),(7,2,'Raíz y Ceniza','Mira Musgorris',7,5,'Druida rodentia guardiana de madrigueras sagradas y claros ocultos, escucha el pulso de la tierra y convoca la furia suave del bosque.',8,12,12,10,15,10,'sabiduria','constitucion',31,3,28,13,0,1),(8,1,'Furia del Brote Escarlata','Draegor Escamarruja',8,1,'Guerrero draconide veterano de mil duelos, avanza como una muralla viviente y rompe líneas enemigas con brutal precisión.',15,10,14,8,10,8,'fuerza','constitucion',6,18,4,18,0,1),(9,1,'Rugido de la Montaña','Orsik Peñafiera',9,7,'Bárbaro ursin nacido en cumbres heladas, combate con ferocidad ancestral y una resistencia temible forjada por el clima salvaje.',15,10,14,8,10,8,'fuerza','constitucion',5,13,5,16,0,1),(10,2,'Llama del Cielo Errante','Aelia Plumardor',10,8,'Hechicera avian tocada por una magia innata de tormentas y auroras, desata poder puro con elegancia luminosa y presencia imponente.',8,10,12,10,10,15,'carisma','constitucion',40,7,36,15,0,1),(11,2,'Gracia del Firmamento','Serapha Luz de Alba',11,4,'Clériga angel consagrada a sanar, proteger y juzgar con compasión, porta una fe antigua que brilla incluso en la noche más oscura.',8,10,12,10,15,12,'sabiduria','carisma',34,16,30,36,0,1),(12,2,'Pacto de Ceniza','Velka Sombrafina',12,3,'Bruja demonio que selló un pacto con entidades del vacío, manipula voluntades y energías prohibidas con un encanto inquietante.',8,10,12,10,10,15,'carisma','inteligencia',39,7,32,22,0,1),(13,2,'Vínculo celestial','Lioren Luz Serena',1,4,'Clérigo humano devoto de un dios olvidado, guía almas perdidas en campos de batalla abandonados.',8,10,14,10,15,14,'sabiduria','carisma',26,17,18,19,1,1),(14,2,'Proxy del Éter','Drake Strong',8,9,'Un draconide ciervo tecnomago pistolero, gracias a su obra maestra de ingenieria puede disparar los hechizos que conjura con gran precision a distancias aterradoras.',10,13,14,15,10,10,'destreza','inteligencia',28,11,19,16,1,1),(15,3,'Canción de la Ventisca','Beatt Lynxel',4,2,'Un legendario felinix alado demasiado perezoso para ir de aventuras pero que mantendrá seguro su lugar de descanso ante cualquier amenaza con una ventisca capaz de congelar el mismisimo infierno.',9,14,12,11,11,15,'carisma','destreza',42,11,36,35,1,1),(16,3,'Garra de las Sombras','Chartreus Dakar',5,12,'Un misterioso houndkin lobo calavera con dominio sobre las sombras, hará lo que sea para proteger a los suyos, en especial a su amado felino y sus cachorros.',12,14,15,11,11,9,'constitucion','destreza',14,18,12,11,1,1);
+/*!40000 ALTER TABLE `builds` ENABLE KEYS */;
+UNLOCK TABLES;

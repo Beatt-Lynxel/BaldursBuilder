@@ -16,13 +16,13 @@ let caracteristicas = {
 };
 // Mapeo de ID de clase a nombre de clase
 const clases = {
-    1: "Bárbaro",
+    1: "Guerrero",
     2: "Bardo",
     3: "Brujo",
     4: "Clérigo",
     5: "Druida",
     6: "Explorador",
-    7: "Guerrero",
+    7: "Bárbaro",
     8: "Hechicero",
     9: "Mago",
     10: "Monje",
