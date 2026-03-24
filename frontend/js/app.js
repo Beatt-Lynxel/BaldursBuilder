@@ -1,5 +1,3 @@
-const { log } = require("node:console");
-
 console.log("Inicio Script");
 const rutaServidor = "https://fantasyrolbuilderappweb.onrender.com";
 
