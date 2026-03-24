@@ -1,5 +1,5 @@
 console.log("Cookies actuales:", document.cookie);
-const rutaServidor = "https://baldursbuilder.onrender.com";
+const rutaServidor = "https://fantasyrolbuilderappweb.onrender.com";
 
 document.getElementById('boton-login').addEventListener('click', (event) => {
     event.preventDefault();

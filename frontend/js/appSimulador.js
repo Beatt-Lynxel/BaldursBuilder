@@ -1,6 +1,6 @@
 console.log("Inicio Script Simulador");
 // Listados de variables y arrays iniciales
-const rutaServidor = "https://baldursbuilder.onrender.com";
+const rutaServidor = "https://fantasyrolbuilderappweb.onrender.com";
 // Valores iniciales de las caracteristicas
 let caracteristicas = {
     fuerza: 8,

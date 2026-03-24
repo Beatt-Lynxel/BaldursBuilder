@@ -10,6 +10,7 @@ routerBuild.get('/publicas', buildsController.obtenerBuildsPublicas);
 routerBuild.get('/:id', buildsController.obtenerBuildPorId);
 routerBuild.post('/crear', buildsController.crearBuild);
 routerBuild.post('/editar', buildsController.editarBuild);
+routerBuild.post('/fixImagen/:id', buildsController.fixImagen);
 routerBuild.post('/ocultar', buildsController.ocultarBuild);
 routerBuild.delete('/borrar', buildsController.borrarBuild);
 

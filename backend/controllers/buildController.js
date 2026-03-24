@@ -189,6 +189,33 @@ const editarBuild = async (req, res) => {
     }
 };
 
+// Arreglar una imagen rota (poniendo el campo imagen a 0, que es el ID de la imagen por defecto)
+const fixImagen = async (req, res) => {
+    const idBuild = parseInt(req.params.id);
+
+    try {
+        const [existe] = await db.query(
+            `SELECT id FROM builds WHERE id = ?`,
+            [idBuild]
+        );
+
+        if (existe.length === 0) {
+            return res.status(404).json({ error: "No tienes una build con ese ID" });
+        }
+        
+        await db.query(
+            `UPDATE builds SET 
+                imagen = 0
+             WHERE id = ?`,
+            [idBuild]
+        );
+
+        res.status(200).json({ mensaje: "Imagen fixeada correctamente." });
+    } catch (error) {
+        res.status(500).json({ error: `Error al fixear la imagen, motivo: ${error}` });
+    }
+};
+
 // Ocultar una build
 const ocultarBuild = async (req, res) => {
     const { id } = req.body;
@@ -242,6 +269,7 @@ module.exports = {
     obtenerBuildsPublicas,
     crearBuild,
     editarBuild,
+    fixImagen,
     ocultarBuild,
     borrarBuild
 }

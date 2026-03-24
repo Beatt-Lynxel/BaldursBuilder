@@ -1,5 +1,5 @@
 console.log(document.cookie);
-const rutaServidor = "https://baldursbuilder.onrender.com";
+const rutaServidor = "https://fantasyrolbuilderappweb.onrender.com";
 
 document.getElementById('boton-cambio-contrasenia').addEventListener('click', (event) => {
     event.preventDefault();

@@ -1,3 +1,5 @@
+const { log } = require("node:console");
+
 console.log("Inicio Script");
 const rutaServidor = "https://fantasyrolbuilderappweb.onrender.com";
 
@@ -285,6 +287,26 @@ function editarBuild() {
     peticionEditar.send(JSON.stringify(datosPeticionEditar));
 } // editarB
 
+function arreglarImagen() {
+    console.log("No hay imagen");
+    personaje.imagen = 0;
+    const peticionFixImag = new XMLHttpRequest();
+    peticionFixImag.open("POST", rutaServidor + "/builds/fixImagen/" + personaje.id);
+    peticionFixImag.setRequestHeader("Content-Type", "application/json");
+    peticionFixImag.onload = function () {
+        if (peticionFixImag.status === 200) {
+            console.log("Imagen fixada correctamente.");
+            actualizarPersonaje();
+        } else {
+            console.error("Error al editar build:", peticionFixImag.responseText);
+        }
+    };
+    peticionFixImag.onerror = function () {
+        console.error("Error al editar build:", peticionFixImag.responseText);
+    };
+    peticionFixImag.send();    
+} // arreglarImagen
+
 function getBonus(claseBonus) {
     const atributos = ["fuerza", "destreza", "constitucion", "inteligencia", "sabiduria", "carisma"];
     for (let atributo of atributos) {
@@ -322,6 +344,17 @@ function actualizarImagen() {
     const imagenBuild = document.getElementById("imagen-build");
 
     if (personaje.imagen === 1) {
+        const url = `${rutaServidor}/uploads/builds/build-${personaje.id}.png#${new Date().getTime()}`;
+        
+        const img = new Image();
+        img.src = url;
+        img.onload = () => {
+            imagenBuild.style.backgroundImage = `url('${url}')`;
+        };
+
+        img.onerror = () => {
+            arreglarImagen();
+        };
         imagenBuild.style.backgroundImage = `url('${rutaServidor}/uploads/builds/build-${personaje.id}.png#${new Date().getTime()}')`;
     } else {
         imagenBuild.style.backgroundImage = `url('./media/builds/build-${personaje.raza}.png')`;
@@ -775,7 +808,7 @@ function mostrarModalMensaje(titulo, mensaje, onConfirm = null) {
             }
         break;
 
-        case "Intro":
+        case "Importante":
             p.innerHTML = mensaje;
         break;
     
@@ -783,22 +816,6 @@ function mostrarModalMensaje(titulo, mensaje, onConfirm = null) {
             p.textContent = mensaje;
         break;
     }
-
-    // if (titulo == "Error") {
-    //     try {
-    //         const parsed = JSON.parse(mensaje);
-    //         if (parsed && parsed.error) {
-    //             p.textContent = parsed.error;
-    //         } else {
-    //             p.textContent = mensaje;
-    //         }
-    //     } catch (e) {
-    //         // Si no es JSON válido, se usa directamente como texto
-    //         p.textContent = mensaje;
-    //     }
-    // } else {
-    //     p.textContent = mensaje;
-    // }
 
     contenedorMensaje.appendChild(h2);
     contenedorMensaje.appendChild(p);
@@ -1403,7 +1420,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // mostrarModalMensaje("Error", "Intro vista");
         document.cookie = "intro_vista" + "; path=/; max-age=" + (60 * 60);
     } else {
-        mostrarModalMensaje("Intro", `Este es un proyecto de practica asi que por favor tened en cuenta lo siguiente:
+        mostrarModalMensaje("Importante", `Este es un proyecto de practica asi que por favor tened en cuenta lo siguiente:
         <br><br>1. El servidor y base de datos al ser gratuitos pueden tardar en enviar la respuesta de la lista de builds
         públicas o estar caidos por completo aunque los reviso cada semana.
         <br><br>2. El servidor no tiene memoria persistente y las imagenes que subais no se guardarán permanentemente.
