@@ -349,11 +349,11 @@ function actualizarImagen() {
         img.onload = () => {
             imagenBuild.style.backgroundImage = `url('${url}')`;
         };
-
+        imagenBuild.style.backgroundImage = `url('${rutaServidor}/uploads/builds/build-${personaje.id}.png#${new Date().getTime()}')`;
         img.onerror = () => {
             arreglarImagen();
+            imagenBuild.style.backgroundImage = `url('./media/builds/build-${personaje.raza}.png')`;
         };
-        imagenBuild.style.backgroundImage = `url('${rutaServidor}/uploads/builds/build-${personaje.id}.png#${new Date().getTime()}')`;
     } else {
         imagenBuild.style.backgroundImage = `url('./media/builds/build-${personaje.raza}.png')`;
     }
