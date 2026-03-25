@@ -70,7 +70,7 @@ const dummyEnemigo = {
     nombre: "Maniqui de Entrenamiento",
     vida: 420,
     vidaActual: 420,
-    defensa: 8,
+    defensa: 5,
     ataque: 5,
     bonificador: -1
 };
