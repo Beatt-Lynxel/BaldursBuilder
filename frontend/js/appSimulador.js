@@ -12,13 +12,13 @@ let caracteristicas = {
 };
 // Mapeo de ID de clase a nombre de clase
 const clases = {
-    1: "Bárbaro",
+    1: "Guerrero",
     2: "Bardo",
     3: "Brujo",
     4: "Clérigo",
     5: "Druida",
     6: "Explorador",
-    7: "Guerrero",
+    7: "Bárbaro",
     8: "Hechicero",
     9: "Mago",
     10: "Monje",
@@ -27,17 +27,18 @@ const clases = {
 };
 // Mapeo de ID de raza a nombre de raza
 const razas = {
-    1: "Elfo",
+    1: "Humano",
     2: "Enano",
-    3: "Tiefling",
-    4: "Drow",
-    5: "Humano",
-    6: "Gnomo",
-    7: "Mediano",
-    8: "Licántropo",
-    9: "Semielfo",
-    10: "Draconido",
-    11: "Tabaxi"
+    3: "Elfo",
+    4: "Felinix",
+    5: "Houndkin",
+    6: "Reptilis",
+    7: "Rodentia",
+    8: "Draconide",
+    9: "Ursin",
+    10: "Avian",
+    11: "Angel",
+    12: "Demonio"
 };
 // JSON del personaje (cambiar a objeto)
 let personaje = {
@@ -45,9 +46,9 @@ let personaje = {
     nombre: "Nueva Build",
     nombre_pj: "Tav",
     raza_id: 1,
-    raza: "Elfo",
+    raza: "Humano",
     clase_id: 1,
-    clase: "Bárbaro",
+    clase: "Guerrero",
     historia: "",
     fuerza: 8,
     destreza: 8,
@@ -63,7 +64,18 @@ let personaje = {
     accesorio2: null
 };
 
-let listaEnemigos = null;
+let listaEnemigos = [];
+const dummyEnemigo = {
+    id: 0,
+    nombre: "Maniqui de Entrenamiento",
+    vida: 420,
+    vidaActual: 420,
+    defensa: 8,
+    ataque: 5,
+    bonificador: -1
+};
+listaEnemigos.push(dummyEnemigo);
+
 let listaBuilds = [];
 let listaBuildsPublicas = null;
 let listaArmas = null;
@@ -455,86 +467,94 @@ function iniciarCombate() {
 
 function renderizarBuilds(lista, contenedorDestino) {
     // foreach para meterlos en <div id="contenedor-lista-enemigos"></div> con nombre, vida, armadura, ataque y bonificador
-    lista.forEach(build => {
-        let atributoArma = "fuerza";
-        if (build.arma != null) {
-            atributoArma = listaArmas[(build.arma)-1].atributo;
-        }
-        const valorAtributo = build[atributoArma];
-        const bono1 = build.bonus1 === atributoArma ? 1 : 0;
-        const bono2 = build.bonus2 === atributoArma ? 2 : 0;
-        let accesorio1 = 0;
-        let accesorio2 = 0;
-        if (build.accesorio1 != null) {
-            accesorio1 = listaAccesorios[(build.accesorio1)-1].atributo === atributoArma ? listaAccesorios[(build.accesorio1)-1].valor : 0;
-        }
-        if (build.accesorio2 != null) {
-            accesorio2 = listaAccesorios[(build.accesorio2)-1].atributo === atributoArma ? listaAccesorios[(build.accesorio2)-1].valor : 0;
-        }
-        console.log("Caracteristica: " + atributoArma + ", Valor: " + valorAtributo + ", Bono1: " + bono1 + ", Bono2: " + bono2 + ", accesorio1: " + accesorio1 + ", accesorio2: " + accesorio2);
-        
-        const valorFinal = valorAtributo + bono1 + bono2 + accesorio1 + accesorio2;
-        if (build.arma != null) {
-            build.ataque = listaArmas[(build.arma)-1].ataque;
-        } else {
-            build.ataque = 6;
-        }
-        build.bonificador = calcularModificador(valorFinal);
-        if (build.armadura != null) {
-            build.defensa = listaArmaduras[(build.armadura)-1].defensa;
-        } else {
-            build.defensa = 10;
-        }
-        build.vida = calcularVida(build.constitucion);
-        
-        // const contenedor = document.getElementById("contenedor-lista-builds");
+    if (lista == null || lista.length === 0) {
+        console.log("No hay builds para mostrar");
         const itemElement = document.createElement("div");
-        itemElement.classList.add("combatiente");
-        itemElement.dataset.id = build.id;
-    
-        const nombre = document.createElement("div");
-        nombre.classList.add("nombre");
-        nombre.innerHTML = `${build.nombre_pj} <br> (${clases[build.clase_id]} - ${razas[build.raza_id]})`;
-    
-        const vida = document.createElement("div");
-        vida.classList.add("vida");
-        vida.textContent = `Vida: ${build.vida}`;
-    
-        const defensa = document.createElement("div");
-        defensa.classList.add("defensa");
-        defensa.textContent = `Defensa: ${build.defensa}`;
-    
-        const ataque = document.createElement("div");
-        ataque.classList.add("ataque");
-        ataque.textContent = `Ataque: ${build.ataque}`;
-    
-        const bonificador = document.createElement("div");
-        bonificador.classList.add("bonificador");
-        bonificador.textContent = `Bonificador: ${build.bonificador}`;
-
-        itemElement.append(nombre, vida, defensa, ataque, bonificador);
-        itemElement.addEventListener("click", () => {
-            buildEscogida = itemElement.dataset.id;
-            build1 = lista.find(e => e.id == buildEscogida);
-            if (build1) {
-                // Actualizamos el contenido
-                document.getElementById("titulo-build1-escogida").innerHTML = `${build1.nombre_pj} <br> (${clases[build1.clase_id]} - ${razas[build1.raza_id]})`;
-                if (build1.imagen == 1) {
-                    document.getElementById("imagen-build1").src = `${rutaServidor}/uploads/builds/build-${build1.id}.png`;
-                } else {
-                    document.getElementById("imagen-build1").src = `../media/builds/build-${razas[build1.raza_id]}.png`
-                }
-                document.getElementById("imagen-build1").alt = `Imagen de ${build1.nombre_pj} (${clases[build1.clase_id]} - ${razas[build1.raza_id]})`;
-                document.getElementById("vida-build1").textContent = `Vida: ${build1.vida}`;
-                document.getElementById("defensa-build1").textContent = `Defensa: ${build1.defensa}`;
-                document.getElementById("ataque-build1").textContent = `Ataque: ${build1.ataque}`;
-                document.getElementById("bonificador-build1").textContent = `Bonificador: ${build1.bonificador}`;
-            }
-            document.getElementById("modal-builds").remove(); //Esta linea da error Uncaught ReferenceError: modalBuilds is not defined
-            document.getElementById("contenedor-build1-seleccionada").classList.remove("oculto");
-        });
+        itemElement.innerText = "No hay builds para mostrar";
         contenedorDestino.appendChild(itemElement);
-    });
+        return;
+    } else {
+        lista.forEach(build => {
+            let atributoArma = "fuerza";
+            if (build.arma != null) {
+                atributoArma = listaArmas[(build.arma)-1].atributo;
+            }
+            const valorAtributo = build[atributoArma];
+            const bono1 = build.bonus1 === atributoArma ? 1 : 0;
+            const bono2 = build.bonus2 === atributoArma ? 2 : 0;
+            let accesorio1 = 0;
+            let accesorio2 = 0;
+            if (build.accesorio1 != null) {
+                accesorio1 = listaAccesorios[(build.accesorio1)-1].atributo === atributoArma ? listaAccesorios[(build.accesorio1)-1].valor : 0;
+            }
+            if (build.accesorio2 != null) {
+                accesorio2 = listaAccesorios[(build.accesorio2)-1].atributo === atributoArma ? listaAccesorios[(build.accesorio2)-1].valor : 0;
+            }
+            console.log("Caracteristica: " + atributoArma + ", Valor: " + valorAtributo + ", Bono1: " + bono1 + ", Bono2: " + bono2 + ", accesorio1: " + accesorio1 + ", accesorio2: " + accesorio2);
+            
+            const valorFinal = valorAtributo + bono1 + bono2 + accesorio1 + accesorio2;
+            if (build.arma != null) {
+                build.ataque = listaArmas[(build.arma)-1].ataque;
+            } else {
+                build.ataque = 6;
+            }
+            build.bonificador = calcularModificador(valorFinal);
+            if (build.armadura != null) {
+                build.defensa = listaArmaduras[(build.armadura)-1].defensa;
+            } else {
+                build.defensa = 10;
+            }
+            build.vida = calcularVida(build.constitucion);
+            
+            // const contenedor = document.getElementById("contenedor-lista-builds");
+            const itemElement = document.createElement("div");
+            itemElement.classList.add("combatiente");
+            itemElement.dataset.id = build.id;
+        
+            const nombre = document.createElement("div");
+            nombre.classList.add("nombre");
+            nombre.innerHTML = `${build.nombre_pj} <br> (${clases[build.clase_id]} - ${razas[build.raza_id]})`;
+        
+            const vida = document.createElement("div");
+            vida.classList.add("vida");
+            vida.textContent = `Vida: ${build.vida}`;
+        
+            const defensa = document.createElement("div");
+            defensa.classList.add("defensa");
+            defensa.textContent = `Defensa: ${build.defensa}`;
+        
+            const ataque = document.createElement("div");
+            ataque.classList.add("ataque");
+            ataque.textContent = `Ataque: ${build.ataque}`;
+        
+            const bonificador = document.createElement("div");
+            bonificador.classList.add("bonificador");
+            bonificador.textContent = `Bonificador: ${build.bonificador}`;
+
+            itemElement.append(nombre, vida, defensa, ataque, bonificador);
+            itemElement.addEventListener("click", () => {
+                buildEscogida = itemElement.dataset.id;
+                build1 = lista.find(e => e.id == buildEscogida);
+                if (build1) {
+                    // Actualizamos el contenido
+                    document.getElementById("titulo-build1-escogida").innerHTML = `${build1.nombre_pj} <br> (${clases[build1.clase_id]} - ${razas[build1.raza_id]})`;
+                    if (build1.imagen == 1) {
+                        document.getElementById("imagen-build1").src = `${rutaServidor}/uploads/builds/build-${build1.id}.png`;
+                    } else {
+                        document.getElementById("imagen-build1").src = `../media/builds/build-${razas[build1.raza_id]}.png`
+                    }
+                    document.getElementById("imagen-build1").alt = `Imagen de ${build1.nombre_pj} (${clases[build1.clase_id]} - ${razas[build1.raza_id]})`;
+                    document.getElementById("vida-build1").textContent = `Vida: ${build1.vida}`;
+                    document.getElementById("defensa-build1").textContent = `Defensa: ${build1.defensa}`;
+                    document.getElementById("ataque-build1").textContent = `Ataque: ${build1.ataque}`;
+                    document.getElementById("bonificador-build1").textContent = `Bonificador: ${build1.bonificador}`;
+                }
+                document.getElementById("modal-builds").remove(); //Esta linea da error Uncaught ReferenceError: modalBuilds is not defined
+                document.getElementById("contenedor-build1-seleccionada").classList.remove("oculto");
+            });
+            contenedorDestino.appendChild(itemElement);
+        });
+    }
 }
 
 function mostrarModalBuilds() {
@@ -897,6 +917,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log('Lista de Enemigos:', enemigos);
         // variable global
         listaEnemigos = enemigos;
+        listaEnemigos.unshift(dummyEnemigo);
     })
     .catch(error => {
         console.error('Error al cargar las builds:', error);
@@ -915,7 +936,10 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Cargando build del almacenamiento local");
         personaje.id = 0;
         personaje.imagen = 0;
+        console.log("Personaje cargado en catch:", personaje);
         listaBuilds.push(personaje);
+        console.log("Lista builds catch:", listaBuilds);
+        
     }); // obtener la lista de builds o si no está conectado la que se creó en la otra pagina
     
     obtenerBuildsPublicas()

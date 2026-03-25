@@ -77,7 +77,7 @@ let listaAccesorios = null;
 
 let rolUsuario = 1;
 let cropper;
-
+const imagenBuild = document.getElementById("imagen-build");
 // ------------------------------------------------------------------ Lista de funciones -----------------------------------------------------------
 function eliminarCookie(nombreCookie) {
     //obtenemos el listado de cookies
@@ -226,11 +226,16 @@ function obtenerBuildsPublicas() {
         console.log(token);
         
         const peticion = new XMLHttpRequest();
-        peticion.open('GET', rutaServidor + '/builds/publicas?token=' + token);
+        peticion.open('GET', rutaServidor + '/builds/publicas?token=' + token + '&t=' + Date.now());
         peticion.addEventListener("load", function () {
+            // console.log("STATUS:", peticion.status);
+            // console.log("RESPONSE:", peticion.responseText);
             if (peticion.status >= 200 && peticion.status < 300) {
                 try {
                     const respuesta = JSON.parse(peticion.responseText);
+                    if (!Array.isArray(respuesta)) {
+                        throw new Error("Respuesta inválida del servidor");
+                    }
                     resolve(respuesta);
                 } catch (error) {
                     reject(new Error('Error al procesar la respuesta: ' + error));
@@ -339,8 +344,6 @@ function actualizarPersonaje() {
 }// Sincronizar el JSON y la UI
 
 function actualizarImagen() {
-    const imagenBuild = document.getElementById("imagen-build");
-
     if (personaje.imagen === 1) {
         const url = `${rutaServidor}/uploads/builds/build-${personaje.id}.png#${new Date().getTime()}`;
         
@@ -408,6 +411,7 @@ function actualizarUI() {
     let razaSelect = document.getElementById("input-raza");
     for (let option of razaSelect.options) {
         if (option.text === personaje.raza) {
+            imagenBuild.style.backgroundImage = `url('./media/builds/build-${personaje.raza}.png')`;
             option.selected = true;
             break;
         }
@@ -643,9 +647,9 @@ function actualizarCheckboxes(datos) {
 
 function irASimulador() {
     localStorage.setItem("personajeGuardado", JSON.stringify(personaje));
-    localStorage.setItem("armasGuardadas", JSON.stringify(listaArmas));
-    localStorage.setItem("armadurasGuardadas", JSON.stringify(listaArmaduras));
-    localStorage.setItem("accesoriosGuardados", JSON.stringify(listaAccesorios));
+    // localStorage.setItem("armasGuardadas", JSON.stringify(listaArmas));
+    // localStorage.setItem("armadurasGuardadas", JSON.stringify(listaArmaduras));
+    // localStorage.setItem("accesoriosGuardados", JSON.stringify(listaAccesorios));
     window.location.href = "htmls/simulador.html";
 } // para ir al simulador
 
@@ -1090,6 +1094,7 @@ document.getElementById("boton-lista-publicas").addEventListener("click", functi
 document.getElementById("boton-crear-build").addEventListener('click', () =>{
     document.getElementById("contenedor-medio").classList.remove("oculto");
     document.getElementById("contenedor-inferior").classList.remove("oculto");
+    actualizarUI();
 }); // Event listener para el boton crear build
 
 // Event para cambiar entre trasfondo, habilidades y equipamiento
@@ -1324,27 +1329,51 @@ obtenerArmas()
 .then(armas => {
     console.log('Lista de armas:', armas);
     listaArmas = armas;
+    localStorage.setItem("armasGuardadas", JSON.stringify(armas));
 })
 .catch(error => {
     console.error('Error al cargar las armas:', error);
+        const armasGuardadas = localStorage.getItem("armasGuardadas");
+        if (armasGuardadas) {
+            listaArmas = JSON.parse(armasGuardadas);
+            console.log("Usando armas guardadas en localStorage");
+        } else {
+            console.error("No hay armas disponibles ni en servidor ni en local");
+        }
 }); // Obtener armas y guardarlas en un array
 
 obtenerArmaduras()
 .then(armaduras => {
     console.log('Lista de armaduras:', armaduras);
     listaArmaduras = armaduras;
+    localStorage.setItem("armadurasGuardadas", JSON.stringify(armaduras));
 })
 .catch(error => {
     console.error('Error al cargar las armaduras:', error);
+        const armadurasGuardadas = localStorage.getItem("armadurasGuardadas");
+        if (armadurasGuardadas) {
+            listaArmaduras = JSON.parse(armadurasGuardadas);
+            console.log("Usando armaduras guardadas en localStorage");
+        } else {
+            console.error("No hay armaduras disponibles ni en servidor ni en local");
+        }
 }); // Obtener armaduras y guardarlas en un array
 
 obtenerAccesorios()
 .then(accesorios => {
     console.log('Lista de accesorios:', accesorios);
     listaAccesorios = accesorios;
+    localStorage.setItem("accesoriosGuardados", JSON.stringify(accesorios));
 })
 .catch(error => {
     console.error('Error al cargar los accesorios:', error);
+        const accesoriosGuardados = localStorage.getItem("accesoriosGuardados");
+        if (accesoriosGuardados) {
+            listaAccesorios = JSON.parse(accesoriosGuardados);
+            console.log("Usando accesorios guardados en localStorage");
+        } else {
+            console.error("No hay accesorios disponibles ni en servidor ni en local");
+        }    
 }); // Obtener accesorios y guardarlos en un array
 
 controlCheckbox();
