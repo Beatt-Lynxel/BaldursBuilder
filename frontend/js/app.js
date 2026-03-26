@@ -925,6 +925,9 @@ function mostrarModalBuilds(lista, esPublica = false) {
                         let numClase = datosBuild.clase_id;
                         personaje.raza = razas[numRaza];
                         personaje.clase = clases[numClase];
+                        if (esPublica) {
+                            personaje.user_id = 0; // Manterener el user_id a 0 para privacidad
+                        }
                         caracteristicas = {
                             fuerza: datosBuild.fuerza,
                             destreza: datosBuild.destreza,
@@ -1428,6 +1431,9 @@ console.log(document.cookie);
 // Obtener builds publicas y guardarlas en un array
 obtenerBuildsPublicas()
 .then(builds => {
+    builds.forEach(build => {
+        build.user_id = 0; // mantener privacidad de los usuarios
+    });
     console.log('Builds Publicas:', builds);
     // variable global
     listaBuildsPublicas = builds;

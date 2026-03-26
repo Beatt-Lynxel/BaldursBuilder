@@ -246,11 +246,16 @@ function obtenerBuildsPublicas() {
         console.log(token);
         
         const peticion = new XMLHttpRequest();
-        peticion.open('GET', rutaServidor + '/builds/publicas?token=' + token);
+        peticion.open('GET', rutaServidor + '/builds/publicas?token=' + token + '&t=' + Date.now());
         peticion.addEventListener("load", function () {
+            // console.log("STATUS:", peticion.status);
+            // console.log("RESPONSE:", peticion.responseText);
             if (peticion.status >= 200 && peticion.status < 300) {
                 try {
                     const respuesta = JSON.parse(peticion.responseText);
+                    if (!Array.isArray(respuesta)) {
+                        throw new Error("Respuesta inválida del servidor");
+                    }
                     resolve(respuesta);
                 } catch (error) {
                     reject(new Error('Error al procesar la respuesta: ' + error));
@@ -264,7 +269,7 @@ function obtenerBuildsPublicas() {
         });
         peticion.send();
     });
-}
+} // get publicas
 
 function calcularVida(constitucion) {
     const valor = constitucion;
@@ -278,7 +283,7 @@ function calcularVida(constitucion) {
     if (personaje.accesorio2 != null) {
         accesorio2 = listaAccesorios[(personaje.accesorio2)-1].atributo === "constitucion" ? listaAccesorios[(personaje.accesorio2)-1].valor : 0;
     }
-    console.log("Caracteristica: " + constitucion + ", Valor: " + valor + ", Bono1: " + bono1 + ", Bono2: " + bono2 + ", accesorio1: " + accesorio1 + ", accesorio2: " + accesorio2);
+    // console.log("Caracteristica: " + constitucion + ", Valor: " + valor + ", Bono1: " + bono1 + ", Bono2: " + bono2 + ", accesorio1: " + accesorio1 + ", accesorio2: " + accesorio2);
     const valorFinal = valor + bono1 + bono2 + accesorio1 + accesorio2;
     const modificador = calcularModificador(valorFinal);
     const vida = 7 + 10*(modificador + 5);
@@ -490,7 +495,7 @@ function renderizarBuilds(lista, contenedorDestino) {
             if (build.accesorio2 != null) {
                 accesorio2 = listaAccesorios[(build.accesorio2)-1].atributo === atributoArma ? listaAccesorios[(build.accesorio2)-1].valor : 0;
             }
-            console.log("Caracteristica: " + atributoArma + ", Valor: " + valorAtributo + ", Bono1: " + bono1 + ", Bono2: " + bono2 + ", accesorio1: " + accesorio1 + ", accesorio2: " + accesorio2);
+            // console.log("Caracteristica: " + atributoArma + ", Valor: " + valorAtributo + ", Bono1: " + bono1 + ", Bono2: " + bono2 + ", accesorio1: " + accesorio1 + ", accesorio2: " + accesorio2);
             
             const valorFinal = valorAtributo + bono1 + bono2 + accesorio1 + accesorio2;
             if (build.arma != null) {
@@ -944,6 +949,9 @@ document.addEventListener("DOMContentLoaded", () => {
     
     obtenerBuildsPublicas()
     .then(builds => {
+        builds.forEach(build => {
+            build.user_id = 0; // mantener privacidad de los usuarios
+        });
         console.log('Builds Publicas:', builds);
         // variable global
         listaBuildsPublicas = builds;
